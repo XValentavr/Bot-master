@@ -5,7 +5,7 @@ import re
 from Command.Create_buttons_churches import create_buttons_churches
 from Command.Create_buttons_regions import create_buttons_regions
 from Command import Create_buttons_regions
-from RegexMethods.Regex_second import get_regex
+from RegexMethods.Regex_second import generate_message
 from MySQLCommand.RegionGetter import get_Region
 from MySQLCommand.MySQLSelect import SelectOperation
 from MySQLCommand.ChurchesCounter import get_Churches_counter
@@ -82,12 +82,13 @@ def visualization(message, bot, user_dict_mysql):
                 local_region.append(string[4])
         if len(string) >= 8:
             if string[7] == 'пов.':
-                local_region.append(string[6] )
+                local_region.append(string[6])
     sorted_region = []
+    cc = 0
     for i in local_region:
         if i not in sorted_region:
-            sorted_region.append(i)
-
+            sorted_region.append(local_region[cc])
+        cc += 1
     global global_region
     global_region = [None for i in range(len(sorted_region))]
     c = 0
@@ -95,7 +96,7 @@ def visualization(message, bot, user_dict_mysql):
     for i in sorted_region:
         global_region[c] = sorted_region[c]
         c += 1
-    if len(global_region) > 1:
+    if len(global_region) > 2:
         create_buttons_regions(message, bot, global_region, CURRENT_CITY)
     else:
         count = get_Churches_counter(last_village_g, ' ')
@@ -133,7 +134,8 @@ def visualization(message, bot, user_dict_mysql):
         else:
             res = SelectOperation(last_village_g, province)
             for i in res:
-                reg_1 = get_regex(i)
+                reg_1 = generate_message(i)
+                print(reg_1)
                 if len(reg_1) > 4096:
                     for x in range(0, len(reg_1), 4096):
                         bot.send_message(message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')

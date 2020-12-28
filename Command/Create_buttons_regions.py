@@ -7,7 +7,7 @@ from Command.Create_buttons_churches import create_buttons_churches
 from MySQLCommand.ChurchesCounter import get_Churches_counter
 from MySQLCommand.SelectChurches import get_Churches
 from MySQLCommand.Select_from_information_about_churches import SelectOperation
-from RegexMethods.Regex_second import get_regex
+from RegexMethods.Regex_second import generate_message
 
 call_data = ''
 
@@ -58,16 +58,17 @@ def callback_worker(call, bot, regions, current_region):
     else:
         for i in regions:
             if call.data == i:
+                print(call.data)
                 res = SelectOperation(call.data, '. ' + cur_regions, call.data)
                 for i in res:
-                    reg_1 = get_regex(i)
+                    reg_1 = generate_message(i)
                     if len(reg_1) > 4096:
                         for x in range(0, len(reg_1), 4096):
                             bot.send_message(call.message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')
                             continue
                     else:
                         bot.send_message(call.message.chat.id, reg_1, parse_mode='Markdown')
-                        continue
+                        break
 
     if call.data == 'Показать заново населенные пункты':
         create_buttons_regions(call, bot, regions, cur_regions)

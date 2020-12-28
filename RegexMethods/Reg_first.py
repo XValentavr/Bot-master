@@ -1,18 +1,14 @@
 import re
 
-
+#todo remove next line symbols before adding info to db
 def reg_first(str):
-    st = re.sub(r"\n|\r|\r\n", ";", str)
-    return st
-
-
-def reg_second(str):
-    st = re.sub(r"\s\;", " ", str)
+    st = re.sub(r"\n|\r|\r\n", " ", str)
+    st = re.sub(r"\s{2,}", " ", st)
     return st
 
 
 def reg_third(str):
-    st = re.sub(r";\s(?![^(]*\))", "\n", str)
+    st = re.sub(r";\s", "\n", str)
     return st
 
 

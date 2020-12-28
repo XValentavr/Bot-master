@@ -1,6 +1,6 @@
 from telebot import types
 from MySQLCommand.Select_from_information_about_churches import SelectOperation
-from RegexMethods.Regex_second import get_regex
+from RegexMethods.Regex_second import generate_message
 
 
 def create_buttons_churches(message, bot, cities):
@@ -24,11 +24,11 @@ def callback_worker(call, bot, cities, current_churches):
         if new_data == new_i:
             res = SelectOperation(new_data, '. '+cur_churches,new_data)
             for i in res:
-                reg_1 = get_regex(i)
+                reg_1 = generate_message(i)
                 if len(reg_1) > 4096:
                     for x in range(0, len(reg_1), 4096):
                         bot.send_message(call.message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')
-                        break
+                        continue
                 else:
                     bot.send_message(call.message.chat.id, reg_1, parse_mode='Markdown')
                     break
