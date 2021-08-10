@@ -6,7 +6,8 @@ city = []
 final_city = []
 cur_region = ''
 
-def create_buttons_new_churches(message, bot, cities,current_region):
+
+def create_buttons_new_churches(message, bot, cities, current_region):
     keyboard = types.InlineKeyboardMarkup()
     global final_city
     global cur_region
@@ -29,6 +30,7 @@ def create_buttons_new_churches(message, bot, cities,current_region):
                                                     '\nВыберите команду для большей информации ',
                          reply_markup=keyboard)
 
+
 def callback_worker(call, bot, current_churches):
     cur_churches = " ".join(map(str, current_churches))
     global cur_region
@@ -38,7 +40,7 @@ def callback_worker(call, bot, current_churches):
         new_i = ''.join(map(str, i))
         new_i = new_i.strip()
         if new_data == new_i:
-            res = SelectOperation(new_data, '. '+cur_churches,cur_)
+            res = SelectOperation(new_data, '. ' + cur_churches, cur_)
             for i in res:
                 reg_1 = generate_message(i)
                 if len(reg_1) > 4096:
@@ -49,4 +51,4 @@ def callback_worker(call, bot, current_churches):
                     bot.send_message(call.message.chat.id, reg_1, parse_mode='Markdown')
                     break
     if call.data == 'Показать церкви ещё':
-        create_buttons_new_churches(call, bot, final_city,cur_region)
+        create_buttons_new_churches(call, bot, final_city, cur_region)

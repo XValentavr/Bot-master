@@ -5,10 +5,9 @@ from mysql.connector import MySQLConnection, Error
 def connect():
     try:
         conn = mysql.connector.connect(host='localhost',
-                                       database='familysearchdb',
+                                       database='genealogyboutique',
                                        user='root',
-                                       password='Djksycrbq')
-
+                                       password='root')
     except Error as e:
         print('Error:', e)
 

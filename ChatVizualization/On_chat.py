@@ -1,19 +1,16 @@
 from MySQLCommand.SelectChurches import get_Churches
-from ChatVizualization import On_chat
-from Command import Create_buttons_regions
 import re
 from Command.Create_buttons_churches import create_buttons_churches
 from Command.Create_buttons_regions import create_buttons_regions
-from Command import Create_buttons_regions
 from RegexMethods.Regex_second import generate_message
 from MySQLCommand.RegionGetter import get_Region
 from MySQLCommand.MySQLSelect import SelectOperation
 from MySQLCommand.ChurchesCounter import get_Churches_counter
 
 global_cities = []
-global_cities_second = []
 CURRENT_CITY = [None for i in range(1)]
 global_region = []
+current_region = ""
 
 
 def visualization(message, bot, user_dict_mysql):
@@ -51,6 +48,7 @@ def visualization(message, bot, user_dict_mysql):
         first_village = mtrcs[0]
         province = ' '
         last_village_g = '. ' + first_village
+
     if mtrcs[1] == None and mtrcs[0] is not None and mtrcs[2] is not None:
         first_village = mtrcs[0]
         province = mtrcs[2]
@@ -62,14 +60,19 @@ def visualization(message, bot, user_dict_mysql):
         province_ = ' '
         last_village_g = '. ' + first_village + ' ' + second_village
         province = province_
+
     if mtrcs[0] is not None and mtrcs[1] is not None and mtrcs[2] is not None:
         village = mtrcs[0]
         second_village = mtrcs[2]
         province_ = ' '
         last_village_g = '. ' + village + ' ' + second_village
         province = province_
+
     region = get_Region(last_village_g)
     local_region = []
+    if mtrcs[1] == None:
+        mtrcs[1] = ''
+
     CURRENT_CITY[0] = (''.join(map(str, mtrcs[0] + ' ' + mtrcs[1])))
     for reg in region:
         new_region = " ".join(map(str, reg))
@@ -90,7 +93,7 @@ def visualization(message, bot, user_dict_mysql):
             sorted_region.append(local_region[cc])
         cc += 1
     global global_region
-    global_region = [None for i in range(len(sorted_region))]
+    global_region = [None for _ in range(len(sorted_region))]
     c = 0
     global global_cities
     for i in sorted_region:
@@ -99,13 +102,13 @@ def visualization(message, bot, user_dict_mysql):
     if len(global_region) > 2:
         create_buttons_regions(message, bot, global_region, CURRENT_CITY)
     else:
-        count = get_Churches_counter(last_village_g, ' ')
-        global_cities = [None for i in range(count)]
+        count = get_Churches_counter(last_village_g.rstrip(), ' ')
+        global_cities = [None for _ in range(count)]
         c = count - 1
         if count == 0:
             bot.send_message(message.chat.id, ' Извините, ничего не найдено.\nПроверьте данные')
         if count >= 5:
-            churches = get_Churches(last_village_g, ' ')
+            churches = get_Churches(last_village_g.rstrip(), ' ')
             for church in churches:
                 zero = church[0].split()
                 if zero[0] == 'церква':
@@ -125,17 +128,32 @@ def visualization(message, bot, user_dict_mysql):
                     global_cities[c] = (new_church + ' ' + mtrcs[0])
                 else:
                     if zero[0] != 'церква':
-                        if (len(new_church.encode('utf-8'))) < 51:
+                        if (len(new_church.encode('utf-8'))) < 50:
                             new_church = new_church + 'церква'
                     global_cities[c] = new_church
                 c -= 1
-            create_buttons_churches(message, bot, global_cities)
+            new_c = count - 1
+            final_global_cities = [None for _ in range(len(global_cities))]
+            for i in global_cities:
+                new_church = i
+                while (len(new_church.encode('utf-8'))) > 64:
+                    new_church = new_church.split()
+                    new_church.pop()
+                    new_church = ' '.join(map(str, new_church))
+                final_global_cities[new_c] = new_church.strip()
+                new_c -= 1
+            global current_region
 
+            if mtrcs[2] != None:
+                current_region = mtrcs[2]
+            else:
+                current_region = ' '
+
+            create_buttons_churches(message, bot, final_global_cities)
         else:
             res = SelectOperation(last_village_g, province)
             for i in res:
                 reg_1 = generate_message(i)
-                print(reg_1)
                 if len(reg_1) > 4096:
                     for x in range(0, len(reg_1), 4096):
                         bot.send_message(message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')

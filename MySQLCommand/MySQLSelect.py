@@ -1,16 +1,21 @@
 from MySQLCommand.CreateConnection import connect
 
 
-def SelectOperation(name, current_church):
-    metric = []
+def SelectOperation(name, current_province):
+    name = ''.join(map(str, name.rstrip()))
+    metrics = []
     connection = connect()
-    query = "select archive.Name, church,birth,wedding,divorce, death,testament,additional from catalog_of_metrics  left join archive archive on archive.number_of_archive = catalog_of_metrics.number_of_archive  where church regexp(%s) and church regexp(%s)"
+
+    query = "select archive.Name, church, birth, wedding, divorce, death, testament, additional, religion from catalog_of_metrics  left join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s) and province regexp(%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name + '\\b.*?'), ('.*?\\' + current_church + '\\b.*?')))
+    cursor.execute(query, (('.*?\\' + name + '\\b.*?'), ('.*?\\' + current_province + '\\b.*?'),))
     result = cursor.fetchall()
-    global count_of
     for item in result:
-        metric.append(item)
+        metrics.append(item)
     cursor.close()
     connection.close()
-    return metric
+    new_metrics = []
+    for i in metrics:
+        if i not in new_metrics:
+            new_metrics.append(i)
+    return new_metrics

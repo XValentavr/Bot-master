@@ -11,11 +11,9 @@ def create_buttons(message, bot):
     key_start = types.InlineKeyboardButton(text='/start', callback_data='start')
     key_help = types.InlineKeyboardButton(text='/help', callback_data='help')
     key_info_first = types.InlineKeyboardButton(text='/info', callback_data='info_first')
-    key_back = types.InlineKeyboardButton(text='/back', callback_data='back')
     keyboard.add(key_start)
     keyboard.add(key_help)
     keyboard.add(key_info_first)
-    keyboard.add(key_back)
     bot.send_message(message.from_user.id, text='Здесь все команды!'
                                                 '\nВыберите команду для большей информации ',
                      reply_markup=keyboard)

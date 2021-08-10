@@ -15,14 +15,14 @@ def create_buttons_churches(message, bot, cities):
                      reply_markup=keyboard)
 
 
-def callback_worker(call, bot, cities, current_churches):
+def callback_worker(call, bot, cities, current_churches,current_region):
     cur_churches = " ".join(map(str, current_churches))
     for i in cities:
         new_data = call.data.strip()
         new_i = ''.join(map(str, i))
         new_i = new_i.strip()
         if new_data == new_i:
-            res = SelectOperation(new_data, '. '+cur_churches,new_data)
+            res = SelectOperation(new_data, '. ' + cur_churches, current_region)
             for i in res:
                 reg_1 = generate_message(i)
                 if len(reg_1) > 4096:

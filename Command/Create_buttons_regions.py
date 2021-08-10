@@ -11,6 +11,7 @@ from RegexMethods.Regex_second import generate_message
 
 call_data = ''
 
+
 def create_buttons_regions(message, bot, regions, cur_city):
     cur_city = " ".join(map(str, cur_city))
     keyboard = types.InlineKeyboardMarkup()
@@ -31,7 +32,7 @@ def callback_worker(call, bot, regions, current_region):
     global_cities = [None for i in range(new_count)]
     c = new_count - 1
     if new_count >= 5:
-        churches = get_Churches('. '+cur_regions, call.data)
+        churches = get_Churches('. ' + cur_regions, call.data)
         for church in churches:
             zero = church[0].split()
             if zero[0] == 'церква':

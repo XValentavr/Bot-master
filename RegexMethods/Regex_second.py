@@ -2,7 +2,12 @@ import re
 
 
 def generate_message(res):
-    res = remove_new_lines(res)
+    res = list(res)
+    count = 0
+    for i in res:
+        if i == None:
+            res[count] = ' '
+        count += 1
     return res[0] + '\n' \
            + res[1] + '\n' \
            + format_birth(res[2]) \
@@ -14,59 +19,60 @@ def generate_message(res):
 
 
 def remove_new_lines(res):
-    new_res = []
-    for r in res:
-        new_r = re.sub(r"\n|\r|\r\n", " ", r)
-        new_r = re.sub(r"\s{2,}", " ", new_r)
-        new_res.append(new_r)
-    return new_res
+    if res != None:
+        new_res = []
+        for r in res:
+            new_r = re.sub(r"\s{2,}", " ", r)
+            new_res.append(new_r)
+        return new_res
+
+
+def remove_forbidden_characters(res):
+    if res != None:
+        new_res = []
+        for r in res:
+            new_r = re.sub(r"[`*]", " ", r)
+            new_res.append(new_r)
+        return new_res
 
 
 def format_birth(birth):
-    if is_empty(birth):
-        return ''
-    birth = replace_semicolon_to_newline(birth)
-    return re.sub(r"^\s?народження:\s?(.*)$", r"*народження:*\n\1", birth, flags=re.DOTALL) + '\n'
+    if birth != None:
+        birth = replace_semicolon_to_newline(birth)
+        return re.sub(r"^\s?народження:\s?(.*)$", r"*народження:*`\n\1`", birth, flags=re.DOTALL) + '\n'
 
 
 def format_wedding(wedding):
-    if is_empty(wedding):
-        return ''
-    wedding = replace_semicolon_to_newline(wedding)
-    return re.sub(r"^\s?шлюб:\s?(.*)$", r"*шлюб:*\n\1", wedding, flags=re.DOTALL) + '\n'
+    if wedding != None:
+        wedding = replace_semicolon_to_newline(wedding)
+        return re.sub(r"^\s?шлюб:\s?(.*)$", r"*шлюб:*`\n\1`", wedding, flags=re.DOTALL) + '\n'
 
 
 def format_divorce(divorce):
-    if is_empty(divorce):
-        return ''
-    divorce = replace_semicolon_to_newline(divorce)
-    return divorce + '\n'
+    if divorce != None:
+        divorce = replace_semicolon_to_newline(divorce)
+        return divorce + '\n'
 
 
 def format_death(death):
-    if is_empty(death):
-        return ''
-    death = replace_semicolon_to_newline(death)
-    return re.sub(r"^\s?смерть:\s?(.*)$", r"*смерть:*\n\1", death, flags=re.DOTALL) + '\n'
+    if death != None:
+        death = replace_semicolon_to_newline(death)
+        return re.sub(r"^\s?смерть:\s?(.*)$", r"*смерть:*`\n\1`", death, flags=re.DOTALL) + '\n'
 
 
 def format_testament(testament):
-    if is_empty(testament):
-        return ''
-    testament = replace_semicolon_to_newline(testament)
-    return testament + '\n'
+    if testament != None:
+        testament = replace_semicolon_to_newline(testament)
+        return re.sub(r"^\s?сповідні відомості:\s?(.*)$", r"*сповідні відомості:*`\n\1`", testament,
+                      flags=re.DOTALL) + '\n'
 
 
 def format_additional(additional):
-    if is_empty(additional):
-        return ''
-    additional = replace_semicolon_to_newline(additional)
-    return additional + '\n'
-
-
-def is_empty(string):
-    return re.search(r"^\s*[-–]\s*$", string)
+    if additional != None:
+        additional = replace_semicolon_to_newline(additional)
+        return additional + '\n'
 
 
 def replace_semicolon_to_newline(string):
-    return re.sub(r";\s?", "\n", string)
+    if string != None:
+        return string.replace(';', '\n')
