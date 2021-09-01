@@ -6,7 +6,7 @@ def SelectOperation(name, current_province):
     metrics = []
     connection = connect()
 
-    query = "select archive.Name, church, birth, wedding, divorce, death, testament, additional, religion from catalog_of_metrics  left join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s) and province regexp(%s)"
+    query = "select archive.Name, province,eparchy,county,church, birth, wedding, divorce, death, testament, additional, religion from catalog_of_metrics  left join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s) and province regexp(%s)"
     cursor = connection.cursor()
     cursor.execute(query, (('.*?\\' + name + '\\b.*?'), ('.*?\\' + current_province + '\\b.*?'),))
     result = cursor.fetchall()

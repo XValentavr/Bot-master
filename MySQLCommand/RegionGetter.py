@@ -1,3 +1,4 @@
+'''
 from MySQLCommand.CreateConnection import connect
 
 
@@ -11,3 +12,4 @@ def get_Region(name):
     cursor.close()
     connection.close()
     return region
+'''

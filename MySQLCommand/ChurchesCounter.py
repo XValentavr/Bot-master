@@ -1,4 +1,4 @@
-from MySQLCommand.CreateConnection import connect
+'''from MySQLCommand.CreateConnection import connect
 
 
 def get_Churches_counter(name, region):
@@ -14,4 +14,4 @@ def get_Churches_counter(name, region):
         churches.append(item)
     cursor.close()
     connection.close()
-    return len(list(set(churches)))
+    return len(list(set(churches)))'''

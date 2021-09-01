@@ -13,8 +13,8 @@ user_dict_mysql = {}
 
 
 class User:
-    def __init__(self, city):
-        self.city = city
+    def __init__(self, key):
+        self.key = key
 
         keys = ['fullname', 'phone']
 
@@ -25,7 +25,7 @@ class User:
 @bot.message_handler(commands=['info'])
 def show_info(message):
     bot.send_message(message.chat.id, 'This program can show you information about '
-                                      'geneology and possibilities of using it')
+                                      'genealogy and possibilities of using it')
 
 
 @bot.message_handler(commands=['help'])
@@ -43,7 +43,7 @@ def send_welcome(message):
     ForStartMenu.someAction(message, bot)
 
 
-@bot.message_handler(commands=['searchFor'])
+@bot.message_handler(commands=['search'])
 def sql_operation(message):
     chat_id = message.chat.id
     user_dict_mysql[chat_id] = User(message.text)
@@ -67,8 +67,8 @@ def process_city_step(message):
         msg = bot.send_message(chat_id, 'Введите Имя и  Отчество', reply_markup=markup)
         bot.register_next_step_handler(msg, registration)
 
-    except Exception as e:
-        bot.reply_to(message, 'ooops!!')
+    except Exception:
+        bot.reply_to(message, 'Произошла ошибка. Перезапустите бота.')
 
 
 def registration(message):
@@ -80,10 +80,9 @@ def select_Churches(message):
     if len(On_chat.global_cities) == 0:
         On_chat.global_cities = [None for _ in range(1)]
     if On_chat.global_cities[0] is None:
-        On_chat.global_cities[0] = ''
+        On_chat.global_cities[0] = ' '
     Create_buttons_churches.callback_worker(message, bot, On_chat.global_cities, On_chat.CURRENT_CITY,
                                             On_chat.current_region)
-    Create_buttons_regions.callback_worker(message, bot, On_chat.global_region, On_chat.CURRENT_CITY)
     Create_buttoms_new_churches.callback_worker(message, bot, On_chat.CURRENT_CITY)
     CreateButtons.callback_worker(message, bot)
 

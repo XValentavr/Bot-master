@@ -1,4 +1,4 @@
-import re
+'''import re
 
 from telebot import types
 
@@ -59,7 +59,6 @@ def callback_worker(call, bot, regions, current_region):
     else:
         for i in regions:
             if call.data == i:
-                print(call.data)
                 res = SelectOperation(call.data, '. ' + cur_regions, call.data)
                 for i in res:
                     reg_1 = generate_message(i)
@@ -72,4 +71,4 @@ def callback_worker(call, bot, regions, current_region):
                         break
 
     if call.data == 'Показать заново населенные пункты':
-        create_buttons_regions(call, bot, regions, cur_regions)
+        create_buttons_regions(call, bot, regions, cur_regions)'''

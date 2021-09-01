@@ -1,4 +1,5 @@
 from MySQLCommand.CreateConnection import connect
+import re
 
 
 def get_Churches(name, region):
@@ -9,13 +10,15 @@ def get_Churches(name, region):
     query = "select church from catalog_of_metrics  where village regexp  (%s)and province regexp  (%s)"
     cursor = connection.cursor()
     cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + region + '\\b.*?'),))
-    result = cursor.fetchall()
-    for item in result:
+    result = list(zip(*cursor.fetchall()))
+    for item in result[0]:
         churches.append(item)
     cursor.close()
     connection.close()
     new_churches = []
-    for i in churches:
-        if i not in new_churches:
-            new_churches.append(i)
-    return new_churches
+    for church in churches:
+        church = re.sub('\(.*', '', church, flags=re.DOTALL)
+        church = re.sub(',.*', '', church, flags=re.DOTALL)
+        if church.strip() not in new_churches:
+            new_churches.append(church.strip())
+    return new_churches, len(new_churches)

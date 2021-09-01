@@ -1,14 +1,11 @@
 from MySQLCommand.SelectChurches import get_Churches
 import re
 from Command.Create_buttons_churches import create_buttons_churches
-from Command.Create_buttons_regions import create_buttons_regions
 from RegexMethods.Regex_second import generate_message
-from MySQLCommand.RegionGetter import get_Region
 from MySQLCommand.MySQLSelect import SelectOperation
-from MySQLCommand.ChurchesCounter import get_Churches_counter
 
-global_cities = []
-CURRENT_CITY = [None for i in range(1)]
+global_cities = list()
+CURRENT_CITY = [None]
 global_region = []
 current_region = ""
 
@@ -67,95 +64,45 @@ def visualization(message, bot, user_dict_mysql):
         province_ = ' '
         last_village_g = '. ' + village + ' ' + second_village
         province = province_
-
-    region = get_Region(last_village_g)
-    local_region = []
     if mtrcs[1] == None:
         mtrcs[1] = ''
-
     CURRENT_CITY[0] = (''.join(map(str, mtrcs[0] + ' ' + mtrcs[1])))
-    for reg in region:
-        new_region = " ".join(map(str, reg))
-        string = new_region.split()
-        if len(string) >= 7:
-            if string[6] == 'пов.':
-                local_region.append(string[5])
-        if len(string) >= 6:
-            if string[5] == 'пов.':
-                local_region.append(string[4])
-        if len(string) >= 8:
-            if string[7] == 'пов.':
-                local_region.append(string[6])
-    sorted_region = []
-    cc = 0
-    for i in local_region:
-        if i not in sorted_region:
-            sorted_region.append(local_region[cc])
-        cc += 1
-    global global_region
-    global_region = [None for _ in range(len(sorted_region))]
-    c = 0
     global global_cities
-    for i in sorted_region:
-        global_region[c] = sorted_region[c]
-        c += 1
-    if len(global_region) > 2:
-        create_buttons_regions(message, bot, global_region, CURRENT_CITY)
-    else:
-        count = get_Churches_counter(last_village_g.rstrip(), ' ')
-        global_cities = [None for _ in range(count)]
-        c = count - 1
-        if count == 0:
-            bot.send_message(message.chat.id, ' Извините, ничего не найдено.\nПроверьте данные')
-        if count >= 5:
-            churches = get_Churches(last_village_g.rstrip(), ' ')
-            for church in churches:
-                zero = church[0].split()
-                if zero[0] == 'церква':
-                    new_church = " ".join(map(str, church))
-                    new_church = re.sub('\(.*', '', new_church, flags=re.DOTALL)
-                    new_church = re.sub(',.*', '', new_church, flags=re.DOTALL)
-                    new_church = re.sub('.' + mtrcs[0] + '.*', '', new_church, flags=re.DOTALL)
-                else:
-                    new_church = " ".join(map(str, church))
-                    new_church = re.sub('церква.*', '', new_church, flags=re.DOTALL)
-                    new_church = re.sub('.' + mtrcs[0] + '.*', '', new_church, flags=re.DOTALL)
-                if (len(new_church.encode('utf-8'))) > 64:
-                    new_i = ''.join(map(str, new_church)).split()[:-1]
-                    new_i.pop(0)
-                    global_cities[c] = ' '.join(map(str, new_i))
-                elif (new_church[-1] == '.'):
-                    global_cities[c] = (new_church + ' ' + mtrcs[0])
-                else:
-                    if zero[0] != 'церква':
-                        if (len(new_church.encode('utf-8'))) < 50:
-                            new_church = new_church + 'церква'
-                    global_cities[c] = new_church
-                c -= 1
-            new_c = count - 1
-            final_global_cities = [None for _ in range(len(global_cities))]
-            for i in global_cities:
-                new_church = i
-                while (len(new_church.encode('utf-8'))) > 64:
-                    new_church = new_church.split()
-                    new_church.pop()
-                    new_church = ' '.join(map(str, new_church))
-                final_global_cities[new_c] = new_church.strip()
-                new_c -= 1
-            global current_region
+    _, count = get_Churches(last_village_g.rstrip(), ' ')
+    global_cities = [None for nn in range(count)]
+    if count == 0:
+        bot.send_message(message.chat.id, ' Извините, ничего не найдено.\nПроверьте данные')
+    if count >= 5:
+        churches, counter = get_Churches(last_village_g.rstrip(), ' ')
+        counter -= 1
+        for church in churches:
+            global_cities[counter] = church
+            counter -= 1
+        new_c = counter
+        final_global_cities = [None for _ in range(len(global_cities))]
+        for i in global_cities:
+            new_church = str(i)
+            while (len(new_church.encode('utf-8'))) > 64:
+                new_church = new_church.split()
+                new_church.pop()
+                new_church = ' '.join(map(str, new_church))
+            final_global_cities[new_c] = new_church.strip()
+            new_c -= 1
 
-            if mtrcs[2] != None:
-                current_region = mtrcs[2]
-            else:
-                current_region = ' '
-
-            create_buttons_churches(message, bot, final_global_cities)
+        global current_region
+        if mtrcs[2] != None:
+            current_region = mtrcs[2]
         else:
-            res = SelectOperation(last_village_g, province)
-            for i in res:
-                reg_1 = generate_message(i)
-                if len(reg_1) > 4096:
-                    for x in range(0, len(reg_1), 4096):
-                        bot.send_message(message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')
-                else:
-                    bot.send_message(message.chat.id, reg_1, parse_mode='Markdown')
+            current_region = ' '
+
+        create_buttons_churches(message, bot, final_global_cities)
+
+    else:
+        res = SelectOperation(last_village_g, province)
+        for i in res:
+            reg_1 = generate_message(i)
+            if len(reg_1) > 4096:
+                for x in range(0, len(reg_1), 4096):
+                    bot.send_message(message.chat.id, reg_1[x:x + 4096], parse_mode='Markdown')
+            else:
+                bot.send_message(message.chat.id, reg_1, parse_mode='Markdown')
