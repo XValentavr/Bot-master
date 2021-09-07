@@ -1,4 +1,4 @@
-from telebot import types
+"""from telebot import types
 from MySQLCommand.Select_from_information_about_churches import SelectOperation
 from RegexMethods.Regex_second import generate_message
 
@@ -51,3 +51,4 @@ def callback_worker(call, bot, current_churches):
                     continue
     if call.data == 'Показать церкви заново':
         create_buttons_new_churches(call, bot, final_city, cur_region)
+"""

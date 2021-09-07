@@ -1,8 +1,8 @@
 from MySQLCommand.SelectChurches import get_Churches
 import re
-from Command.Create_buttons_churches import create_buttons_churches
 from RegexMethods.Regex_second import generate_message
 from MySQLCommand.MySQLSelect import SelectOperation
+from Sorted import SortedBy
 
 global_cities = list()
 CURRENT_CITY = [None]
@@ -69,7 +69,7 @@ def visualization(message, bot, user_dict_mysql):
     CURRENT_CITY[0] = (''.join(map(str, mtrcs[0] + ' ' + mtrcs[1])))
     global global_cities
     _, count = get_Churches(last_village_g.rstrip(), ' ')
-    global_cities = [None for nn in range(count)]
+    global_cities = [None for _ in range(count)]
     if count == 0:
         bot.send_message(message.chat.id, ' Извините, ничего не найдено.\nПроверьте данные')
     if count >= 5:
@@ -88,15 +88,13 @@ def visualization(message, bot, user_dict_mysql):
                 new_church = ' '.join(map(str, new_church))
             final_global_cities[new_c] = new_church.strip()
             new_c -= 1
-
+        global_cities = final_global_cities
         global current_region
         if mtrcs[2] != None:
             current_region = mtrcs[2]
         else:
             current_region = ' '
-
-        create_buttons_churches(message, bot, final_global_cities)
-
+        SortedBy.sorted_by(bot, message)
     else:
         res = SelectOperation(last_village_g, province)
         for i in res:

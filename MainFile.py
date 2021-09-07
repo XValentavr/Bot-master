@@ -1,11 +1,13 @@
 import telebot
 from telebot import types  # кнопки
-from Command import CreateButtons as CreateButtons, Create_buttons_churches, Create_buttons_regions, \
-    Create_buttoms_new_churches
+from Command import CreateButtons as CreateButtons, Create_buttons_churches
+
 from Command import ForStartMenu as ForStartMenu
 from ChatVizualization.On_chat import visualization
 from ChatVizualization import On_chat
 from UserRegistration.RegistrationNameUser import process_fullname_step
+from Sorted import SortedBy
+from Command import Create_buttons_county
 
 bot = telebot.TeleBot('1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw')
 user_dict = {}
@@ -76,14 +78,15 @@ def registration(message):
 
 
 @bot.callback_query_handler(func=lambda message: True)
-def select_Churches(message):
+def select_churches(message):
     if len(On_chat.global_cities) == 0:
         On_chat.global_cities = [None for _ in range(1)]
     if On_chat.global_cities[0] is None:
         On_chat.global_cities[0] = ' '
+    SortedBy.callback_worker(message, bot, On_chat.global_cities, On_chat.CURRENT_CITY, On_chat.current_region)
     Create_buttons_churches.callback_worker(message, bot, On_chat.global_cities, On_chat.CURRENT_CITY,
                                             On_chat.current_region)
-    Create_buttoms_new_churches.callback_worker(message, bot, On_chat.CURRENT_CITY)
+    Create_buttons_county.callback_worker(message, bot, On_chat.CURRENT_CITY, On_chat.current_region)
     CreateButtons.callback_worker(message, bot)
 
 

@@ -11,14 +11,15 @@ def get_Churches(name, region):
     cursor = connection.cursor()
     cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + region + '\\b.*?'),))
     result = list(zip(*cursor.fetchall()))
-    for item in result[0]:
-        churches.append(item)
-    cursor.close()
-    connection.close()
     new_churches = []
-    for church in churches:
-        church = re.sub('\(.*', '', church, flags=re.DOTALL)
-        church = re.sub(',.*', '', church, flags=re.DOTALL)
-        if church.strip() not in new_churches:
-            new_churches.append(church.strip())
+    if len(result) != 0:
+        for item in result[0]:
+            churches.append(item)
+        cursor.close()
+        connection.close()
+        for church in churches:
+            church = re.sub('\(.*', '', church, flags=re.DOTALL)
+            church = re.sub(',.*', '', church, flags=re.DOTALL)
+            if church.strip() not in new_churches:
+                new_churches.append(church.strip())
     return new_churches, len(new_churches)

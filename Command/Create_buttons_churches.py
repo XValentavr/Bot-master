@@ -1,5 +1,5 @@
 from telebot import types
-from MySQLCommand.Select_from_information_about_churches import SelectOperation
+from MySQLCommand.Select_from_information_about_churches import select_operation_get_churches
 from RegexMethods.Regex_second import generate_message
 
 
@@ -15,14 +15,14 @@ def create_buttons_churches(message, bot, cities):
                      reply_markup=keyboard)
 
 
-def callback_worker(call, bot, cities, current_churches, current_region):
-    cur_churches = " ".join(map(str, current_churches))
+def callback_worker(call, bot, cities, current_churches, cur_region):
+    cur_locality = " ".join(map(str, current_churches))
     for i in cities:
-        new_data = call.data.strip()
+        cur_church = call.data.strip()
         new_i = ''.join(map(str, i))
         new_i = new_i.strip()
-        if new_data in new_i:
-            res = SelectOperation(new_data, '. ' + cur_churches, current_region)
+        if cur_church in new_i:
+            res = select_operation_get_churches(cur_church, '. ' + cur_locality, cur_region)
             for church in res:
                 reg_1 = generate_message(church)
                 reg_1 = reg_1.replace('*', '')
