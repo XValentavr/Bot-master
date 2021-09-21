@@ -1,28 +1,14 @@
 import telebot
-from telebot import types  # кнопки
+from telebot import types
 from Command import CreateButtons as CreateButtons, Create_buttons_churches
-
 from Command import ForStartMenu as ForStartMenu
 from ChatVizualization.On_chat import visualization
 from ChatVizualization import On_chat
-from UserRegistration.RegistrationNameUser import process_fullname_step
 from Sorted import SortedBy
 from Command import Create_buttons_county
 
 bot = telebot.TeleBot('1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw')
-user_dict = {}
 user_dict_mysql = {}
-
-
-class User:
-    def __init__(self, key):
-        self.key = key
-
-        keys = ['fullname', 'phone']
-
-        for key in keys:
-            self.key = None
-
 
 @bot.message_handler(commands=['info'])
 def show_info(message):
@@ -48,33 +34,36 @@ def send_welcome(message):
 @bot.message_handler(commands=['search'])
 def sql_operation(message):
     chat_id = message.chat.id
-    user_dict_mysql[chat_id] = User(message.text)
     markup = types.ReplyKeyboardRemove(selective=False)
     msg = bot.send_message(chat_id, 'Введите название населенного пункта', reply_markup=markup)
     bot.register_next_step_handler(msg, process_village)
 
 
 def process_village(message):
-    visualization(message, bot, user_dict_mysql)
+    visualization(message, bot)
 
 
 @bot.message_handler(commands=['order'])
 def process_city_step(message):
     try:
-        chat_id = message.chat.id
-        user_dict[chat_id] = User(message.text)
+        from SendLetter.SendLetter import to_order
+        to_order(message, bot)
 
-        markup = types.ReplyKeyboardRemove(selective=False)
-
-        msg = bot.send_message(chat_id, 'Введите Имя и  Отчество', reply_markup=markup)
-        bot.register_next_step_handler(msg, registration)
+        '''       chat_id = message.chat.id
+               user_dict[chat_id] = User(message.text)
+        
+               markup = types.ReplyKeyboardRemove(selective=False)
+        
+               msg = bot.send_message(chat_id, 'Введите Имя и  Отчество', reply_markup=markup)
+               bot.register_next_step_handler(msg, registration)
+        '''
 
     except Exception:
         bot.reply_to(message, 'Произошла ошибка. Перезапустите бота.')
 
 
-def registration(message):
-    process_fullname_step(message, bot, user_dict)
+'''def registration(message):
+    process_fullname_step(message, bot, user_dict)'''
 
 
 @bot.callback_query_handler(func=lambda message: True)
@@ -90,4 +79,4 @@ def select_churches(message):
     CreateButtons.callback_worker(message, bot)
 
 
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True, interval=0, allowed_updates=None)

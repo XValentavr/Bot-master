@@ -10,12 +10,10 @@ global_region = []
 current_region = ""
 
 
-def visualization(message, bot, user_dict_mysql):
-    chat_id = message.chat.id
-    user = user_dict_mysql[chat_id]
-    user.village = message.text
-    mtrcs = [None for i in range(3)]
-    words = user.village.split()
+def visualization(message, bot):
+    village = message.text
+    mtrcs = [None for _ in range(3)]
+    words = village.split()
     last_village_g = ''
     province = ''
     if len(words) == 3:
@@ -68,12 +66,12 @@ def visualization(message, bot, user_dict_mysql):
         mtrcs[1] = ''
     CURRENT_CITY[0] = (''.join(map(str, mtrcs[0] + ' ' + mtrcs[1])))
     global global_cities
-    _, count = get_Churches(last_village_g.rstrip(), ' ')
+    _, count = get_Churches(last_village_g.rstrip(), province)
     global_cities = [None for _ in range(count)]
     if count == 0:
         bot.send_message(message.chat.id, ' Извините, ничего не найдено.\nПроверьте данные')
     if count >= 5:
-        churches, counter = get_Churches(last_village_g.rstrip(), ' ')
+        churches, counter = get_Churches(last_village_g.rstrip(), province)
         counter -= 1
         for church in churches:
             global_cities[counter] = church

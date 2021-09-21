@@ -13,7 +13,6 @@ def reg_third(str):
 
 
 def reg_fourth(str):
-    st = re.sub(r"Сумський державний архів\s", "Сумський державний архів:\n", str)
     st = re.sub(r"народження:\s", "*народження:*\n", st)
     st = re.sub(r"шлюб:\s", "*шлюб:*\n", st)
     st = re.sub(r"смерть:\s", "*смерть:*\n", st)

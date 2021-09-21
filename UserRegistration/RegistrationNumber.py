@@ -1,5 +1,5 @@
-from UserRegistration import RegistrationNameUser
-from SendLetter.SendLetter import create_email
+'''from UserRegistration import RegistrationNameUser
+from SendLetter.SendLetter import to_order
 
 global bot_value
 global new_user_dict
@@ -16,9 +16,10 @@ def process_phone_step(message, bot, user_dict):
         bot_value = bot
         if user.phone.isdigit():
             msg = bot.send_message(chat_id, 'Вы успешно зарегестрировались! С Вами свяжется администратор')
-            create_email(msg, new_user_dict)
+            to_order(message, bot, new_user_dict)
         else:
             msg = bot.reply_to(message, 'Вы ввели что то другое. Пожалуйста введите номер телефона.')
             bot.register_next_step_handler(msg, RegistrationNameUser.get_phone_number)
     except Exception as e:
         print('Проиизошла ошибка, повторите попытку запроса:', e)
+'''

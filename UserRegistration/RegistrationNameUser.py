@@ -1,4 +1,4 @@
-from . import RegistrationNumber
+'''from . import RegistrationNumber
 
 global bot_value
 global new_user_dict
@@ -22,4 +22,4 @@ def process_fullname_step(message, bot, user_dict):
 
 
 def get_phone_number(message):
-    RegistrationNumber.process_phone_step(message, bot_value, new_user_dict)
+    RegistrationNumber.process_phone_step(message, bot_value, new_user_dict)'''

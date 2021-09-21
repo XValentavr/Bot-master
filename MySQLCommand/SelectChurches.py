@@ -7,7 +7,7 @@ def get_Churches(name, region):
     name1 = ''.join(map(str, name1))
     churches = []
     connection = connect()
-    query = "select church from catalog_of_metrics  where village regexp  (%s)and province regexp  (%s)"
+    query = "select church from catalog_of_metrics  where village regexp  (%s)and county regexp  (%s)"
     cursor = connection.cursor()
     cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + region + '\\b.*?'),))
     result = list(zip(*cursor.fetchall()))
