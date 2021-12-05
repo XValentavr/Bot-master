@@ -1,3 +1,8 @@
+"""
+This module registrate user phine number
+"""
+
+
 '''from UserRegistration import RegistrationNameUser
 from SendLetter.SendLetter import to_order
 
@@ -5,7 +10,14 @@ global bot_value
 global new_user_dict
 
 
-def process_phone_step(message, bot, user_dict):
+def process_phone_step(message, bot, user_dict:dict)->None:
+    """
+    Registrate phone number in a dict
+    :param message:message
+    :param bot:telebot
+    :param user_dict:dict
+    :return:None
+    """
     try:
         chat_id = message.chat.id
         user = user_dict[chat_id]
