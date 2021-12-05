@@ -1,10 +1,20 @@
+"""
+This moduele registrate user
+"""
 '''from . import RegistrationNumber
 
 global bot_value
 global new_user_dict
 
 
-def process_fullname_step(message, bot, user_dict):
+def process_fullname_step(message, bot, user_dict:dict)->None:
+"""
+This add username to a dict
+:param message: message
+:param bot: telebot
+:param user_dict:dict
+:return:None
+"""
     try:
         chat_id = message.chat.id
         user = user_dict[chat_id]
@@ -21,5 +31,10 @@ def process_fullname_step(message, bot, user_dict):
         bot.reply_to(message, 'ooops!!')
 
 
-def get_phone_number(message):
+def get_phone_number(message)->None:
+    """
+    go to number handler module
+    :param message:message
+    :return:None
+    """
     RegistrationNumber.process_phone_step(message, bot_value, new_user_dict)'''
