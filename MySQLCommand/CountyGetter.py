@@ -1,8 +1,18 @@
+"""
+This module gets county data from local database
+"""
+# local imports
 from MySQLCommand.CreateConnection import connect
 import re
 
 
-def get_county(name, region):
+def get_county(name: str, region: str) -> list:
+    """
+    gets information about county from database
+    :param name: str
+    :param region: str
+    :return: list
+    """
     name1 = name.rstrip()
     connection = connect()
     query = "select distinct county from catalog_of_metrics  where village regexp  (%s) and county regexp(%s)"

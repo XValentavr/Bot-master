@@ -1,2 +1,13 @@
-def to_order(message, bot):
-    bot.send_message(message.chat.id, 'За дополнительной информацией обращайтесь к @XValentavr')
+"""
+This module send message if command is selected
+"""
+
+
+def to_order(message, bot) -> None:
+    """
+    send message when /order cpmmand is selected
+    :param message: message
+    :param bot: telebot
+    :return: None
+    """
+    bot.send_message(message.chat.id, 'За дополнительной информацией обращайтесь к @Valentavr')

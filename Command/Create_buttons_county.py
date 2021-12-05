@@ -1,10 +1,23 @@
+"""
+This module creates buttons if county mod was selected
+"""
+
+# local imports
 from telebot import types
 from MySQLCommand.CountyGetter import get_county
 from MySQLCommand.SelectChurches import get_Churches
 from Command.Create_buttons_churches import create_buttons_churches
 
 
-def create_buttons_county(message, bot, village, county):
+def create_buttons_county(message, bot, village: list, county: str) -> None:
+    """
+    create county buttons
+    :param message: message
+    :param bot: telebot
+    :param village: list
+    :param county: str
+    :return: None
+    """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     village = "".join(map(str, village))
     counties = get_county('. ' + village, county)
@@ -18,7 +31,15 @@ def create_buttons_county(message, bot, village, county):
                      reply_markup=keyboard)
 
 
-def callback_worker(call, bot, village, county):
+def callback_worker(call, bot, village: list, county: str) -> None:
+    """
+    handle touch command
+    :param call: message call
+    :param bot: telebot
+    :param village: list
+    :param county: str
+    :return: None
+    """
     village = " ".join(map(str, village))
     if 'повіт' in call.data:
         village = "".join(map(str, village))

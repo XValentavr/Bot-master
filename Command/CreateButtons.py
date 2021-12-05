@@ -1,3 +1,8 @@
+"""
+This module shows posibilities of command of bot
+"""
+
+# local imports
 from telebot import types
 
 help = ['Получаем информацию о всех командах']
@@ -6,7 +11,13 @@ searchFor = ['Поиск информации']
 info_first = ['Получить информацию о возможностях']
 
 
-def create_buttons(message, bot):
+def create_buttons(message, bot) -> None:
+    """
+    create inline buttons to show more info
+    :param message: message
+    :param bot: telebot
+    :return: None
+    """
     keyboard = types.InlineKeyboardMarkup()
     key_start = types.InlineKeyboardButton(text='/start', callback_data='start')
     key_help = types.InlineKeyboardButton(text='/help', callback_data='help')
@@ -19,7 +30,13 @@ def create_buttons(message, bot):
                      reply_markup=keyboard)
 
 
-def callback_worker(call, bot):
+def callback_worker(call, bot) -> None:
+    """
+    handle touch command
+    :param call: call message
+    :param bot: telebot
+    :return: None
+    """
     if call.data == 'help':
         msg = help
         bot.send_message(call.message.chat.id, msg)

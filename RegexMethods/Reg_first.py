@@ -1,19 +1,37 @@
+"""
+Change information before show it to user
+"""
 import re
 
-#todo remove next line symbols before adding info to db
-def reg_first(str):
-    st = re.sub(r"\n|\r|\r\n", " ", str)
+
+def reg_first(string: str) -> str:
+    """
+    delete new lines
+    :param string: str
+    :return: str
+    """
+    st = re.sub(r"\n|\r|\r\n", " ", string)
     st = re.sub(r"\s{2,}", " ", st)
     return st
 
 
-def reg_third(str):
-    st = re.sub(r";\s", "\n", str)
+def reg_third(string: str) -> str:
+    """
+    changes ; to new line
+    :param string: str
+    :return: str
+    """
+    st = re.sub(r";\s", "\n", string)
     return st
 
 
-def reg_fourth(str):
-    st = re.sub(r"народження:\s", "*народження:*\n", st)
+def reg_fourth(string: str) -> str:
+    """
+    markup needed data
+    :param string: str
+    :return: str
+    """
+    st = re.sub(r"народження:\s", "*народження:*\n", string)
     st = re.sub(r"шлюб:\s", "*шлюб:*\n", st)
     st = re.sub(r"смерть:\s", "*смерть:*\n", st)
     st = re.sub(r"сповідні відомості:\s", "*сповідні відомості:*\n", st)

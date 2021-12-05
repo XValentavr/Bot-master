@@ -10,6 +10,7 @@ from Command import Create_buttons_county
 bot = telebot.TeleBot('1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw')
 user_dict_mysql = {}
 
+
 @bot.message_handler(commands=['info'])
 def show_info(message):
     bot.send_message(message.chat.id, 'This program can show you information about '

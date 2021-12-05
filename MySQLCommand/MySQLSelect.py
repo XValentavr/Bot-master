@@ -1,7 +1,18 @@
+"""
+This module gets all information from database
+"""
+
+# local imports
 from MySQLCommand.CreateConnection import connect
 
 
-def SelectOperation(name, current_province):
+def SelectOperation(name: str, current_province: str) -> list:
+    """
+    get all information if province and locality is set
+    :param name: str
+    :param current_province: str
+    :return: list
+    """
     name = ''.join(map(str, name.rstrip()))
     metrics = []
     connection = connect()

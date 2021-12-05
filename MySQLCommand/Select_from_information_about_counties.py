@@ -1,7 +1,17 @@
+"""
+This module show all information if county mod is selected
+"""
+# local imports
 from MySQLCommand.CreateConnection import connect
 
 
-def select_operation_get_counties(current_county, current_village):
+def select_operation_get_counties(current_county: str, current_village: list) -> list:
+    """
+    get info is county is selected
+    :param current_county: str
+    :param current_village: list
+    :return: list
+    """
     new_village = ''.join(map(str, current_village.rstrip()))
     connection = connect()
     query = "select archive.Name, province,eparchy,village,religion,county,church,birth,wedding,divorce, death,testament," \

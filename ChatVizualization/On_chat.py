@@ -1,5 +1,11 @@
-from MySQLCommand.SelectChurches import get_Churches
+"""
+This module shows changed data to user telegram chat
+"""
+# project imports
 import re
+
+# local imports
+from MySQLCommand.SelectChurches import get_Churches
 from RegexMethods.Regex_second import generate_message
 from MySQLCommand.MySQLSelect import SelectOperation
 from Sorted import SortedBy
@@ -10,7 +16,13 @@ global_region = []
 current_region = ""
 
 
-def visualization(message, bot):
+def visualization(message, bot) -> None:
+    """
+    this module transform data and send it to chat
+    :param message: bot messge
+    :param bot: telebot
+    :return: None
+    """
     village = message.text
     mtrcs = [None for _ in range(3)]
     words = village.split()

@@ -1,8 +1,19 @@
+"""
+Select all churches when its needed
+"""
+
+# local imports
 from MySQLCommand.CreateConnection import connect
 import re
 
 
-def get_Churches(name, region):
+def get_Churches(name: str, region: str) -> list:
+    """
+    get all churches of current county
+    :param name: str
+    :param region: str
+    :return: list
+    """
     name1 = name.rstrip()
     name1 = ''.join(map(str, name1))
     churches = []
