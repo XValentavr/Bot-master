@@ -50,15 +50,6 @@ def process_city_step(message):
         from SendLetter.SendLetter import to_order
         to_order(message, bot)
 
-        '''       chat_id = message.chat.id
-               user_dict[chat_id] = User(message.text)
-        
-               markup = types.ReplyKeyboardRemove(selective=False)
-        
-               msg = bot.send_message(chat_id, 'Введите Имя и  Отчество', reply_markup=markup)
-               bot.register_next_step_handler(msg, registration)
-        '''
-
     except Exception:
         bot.reply_to(message, 'Произошла ошибка. Перезапустите бота.')
 
