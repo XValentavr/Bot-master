@@ -6,6 +6,7 @@ This module creates possibilities of sort info
 from Command.Create_buttons_churches import create_buttons_churches
 from telebot import types
 from Command.Create_buttons_county import create_buttons_county
+from MySQLCommand.SelectChurches import get_Churches
 
 
 def sorted_by(bot, message) -> None:
@@ -24,7 +25,7 @@ def sorted_by(bot, message) -> None:
                      reply_markup=keyboard)
 
 
-def callback_worker(message, bot, sorted_: str, village: str, county: str) -> None:
+def callback_worker(message, bot, village: str, county: str) -> None:
     """
     sort info bu church or county
     :param message: message
@@ -35,6 +36,17 @@ def callback_worker(message, bot, sorted_: str, village: str, county: str) -> No
     :return: None
     """
     if message.data == "Церковь":
-        create_buttons_churches(message=message, bot=bot, cities=sorted_)
+        churches, length = get_Churches(village.rstrip(), county)
+        new_c = length - 1
+        final_churches = [None for _ in range(length)]
+        for i in churches:
+            new_church = str(i)
+            while (len(new_church.encode('utf-8'))) > 64:
+                new_church = new_church.split()
+                new_church.pop()
+                new_church = ' '.join(map(str, new_church))
+            final_churches[new_c] = new_church.strip()
+            new_c -= 1
+        create_buttons_churches(message=message, bot=bot, cities=final_churches)
     if message.data == "Уезд":
         create_buttons_county(message=message, bot=bot, village=village, county=county)

@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from Command import CreateButtons as CreateButtons, Create_buttons_churches
+from Command import CreateButtons as CreateButtons, Create_buttons_churches, Create_buttoms_different_locality
 from Command import ForStartMenu as ForStartMenu
 from ChatVizualization.On_chat import visualization
 from ChatVizualization import On_chat
@@ -13,8 +13,7 @@ user_dict_mysql = {}
 
 @bot.message_handler(commands=['info'])
 def show_info(message):
-    bot.send_message(message.chat.id, 'This program can show you information about '
-                                      'genealogy and possibilities of using it')
+    bot.send_message(message.chat.id, 'Вы можете найти метрики в архивах Украины, используя этого бота.')
 
 
 @bot.message_handler(commands=['help'])
@@ -54,20 +53,23 @@ def process_city_step(message):
         bot.reply_to(message, 'Произошла ошибка. Перезапустите бота.')
 
 
-'''def registration(message):
-    process_fullname_step(message, bot, user_dict)'''
-
-
 @bot.callback_query_handler(func=lambda message: True)
 def select_churches(message):
     if len(On_chat.global_cities) == 0:
         On_chat.global_cities = [None for _ in range(1)]
     if On_chat.global_cities[0] is None:
         On_chat.global_cities[0] = ' '
-    SortedBy.callback_worker(message, bot, On_chat.global_cities, On_chat.CURRENT_CITY, On_chat.current_region)
-    Create_buttons_churches.callback_worker(message, bot, On_chat.global_cities, On_chat.CURRENT_CITY,
+    Create_buttoms_different_locality.callback_worker(message, bot, On_chat.CURRENT_CITY)
+    from Command.Create_buttoms_different_locality import button_village
+    if button_village != '' and "".join(map(str, On_chat.CURRENT_CITY)).strip() in "".join(
+            map(str, button_village)).strip():
+        village = button_village
+    else:
+        village = '. ' + "".join(map(str, On_chat.CURRENT_CITY)).strip()
+    SortedBy.callback_worker(message, bot, village, On_chat.current_region)
+    Create_buttons_churches.callback_worker(message, bot, On_chat.global_cities, village,
                                             On_chat.current_region)
-    Create_buttons_county.callback_worker(message, bot, On_chat.CURRENT_CITY, On_chat.current_region)
+    Create_buttons_county.callback_worker(message, bot, village, On_chat.current_region)
     CreateButtons.callback_worker(message, bot)
 
 

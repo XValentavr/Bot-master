@@ -20,7 +20,7 @@ def create_buttons_county(message, bot, village: list, county: str) -> None:
     """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     village = "".join(map(str, village))
-    counties = get_county('. ' + village, county)
+    counties = get_county(village, county)
     for i in counties:
         key = types.InlineKeyboardButton(text=i, callback_data=i)
         keyboard.add(key)
@@ -40,10 +40,9 @@ def callback_worker(call, bot, village: list, county: str) -> None:
     :param county: str
     :return: None
     """
-    village = " ".join(map(str, village))
     if 'повіт' in call.data:
         village = "".join(map(str, village))
-        counties, counter = get_Churches('. ' + village, call.data)
+        counties, counter = get_Churches(village, call.data)
         global_counties = [None for _ in range(counter)]
         counter -= 1
         for county in counties:

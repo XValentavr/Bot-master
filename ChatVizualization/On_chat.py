@@ -9,6 +9,8 @@ from MySQLCommand.SelectChurches import get_Churches
 from RegexMethods.Regex_second import generate_message
 from MySQLCommand.MySQLSelect import SelectOperation
 from Sorted import SortedBy
+from MySQLCommand.get_multiple_locality import get_multiple
+from Command.Create_buttoms_different_locality import create_buttons_multiple_locality
 
 global_cities = list()
 CURRENT_CITY = [None]
@@ -104,7 +106,10 @@ def visualization(message, bot) -> None:
             current_region = mtrcs[2]
         else:
             current_region = ' '
-        SortedBy.sorted_by(bot, message)
+        if len(get_multiple(village)) <= 5:
+            SortedBy.sorted_by(bot, message)
+        else:
+            create_buttons_multiple_locality(bot=bot, message=message, locality=get_multiple(village))
     else:
         res = SelectOperation(last_village_g, province)
         for i in res:
