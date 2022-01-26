@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 from Command import CreateButtons as CreateButtons, Create_buttons_churches, Create_buttons_county, \
-    Create_buttoms_different_locality
+    Create_buttoms_different_locality, CreateArchiveButton
 
 from Command import ForStartMenu as ForStartMenu
 from ChatVizualization.On_chat import visualization
@@ -31,6 +31,11 @@ def send_welcome(message):
     ForStartMenu.some_action(message, bot)
 
 
+@bot.message_handler(commands=['archive'])
+def show_arcive(message):
+    CreateArchiveButton.show_archive(bot, message)
+
+
 @bot.message_handler(commands=['search'])
 def sql_operation(message):
     chat_id = message.chat.id
@@ -53,12 +58,17 @@ def process_city_step(message):
         bot.reply_to(message, 'Произошла ошибка. Перезапустите бота.')
 
 
-@bot.callback_query_handler(func=lambda message: True)
+@bot.callback_query_handler(func=lambda message: message.data not in ['help', 'start', 'info_first', 'archive'])
 def select_churches(message):
     SortedBy.callback_worker(message, bot)
-    Create_buttoms_different_locality.callback_worker(message, bot)
     Create_buttons_county.callback_worker(message, bot)
     Create_buttons_churches.callback_worker(message, bot)
+    Create_buttoms_different_locality.callback_worker(message, bot)
+
+
+@bot.callback_query_handler(func=lambda message: message.data in ['help', 'start', 'info_first', 'archive'])
+def help_handler(message):
+    CreateButtons.callback_worker(message, bot)
 
 
 bot.polling(none_stop=True, interval=0, allowed_updates=None)

@@ -2,15 +2,14 @@
 This module shows changed data to user telegram chat
 """
 # project imports
-import re
 
+from Command.Create_buttoms_different_locality import create_buttons_multiple_locality
+from MySQLCommand.MySQLSelect import SelectOperation
 # local imports
 from MySQLCommand.SelectChurches import get_Churches
-from RegexMethods.Regex_second import generate_message
-from MySQLCommand.MySQLSelect import SelectOperation
-from Sorted import SortedBy
 from MySQLCommand.get_multiple_locality import get_multiple
-from Command.Create_buttoms_different_locality import create_buttons_multiple_locality
+from RegexMethods.Regex_second import generate_message
+from Sorted import SortedBy
 
 
 def visualization(message, bot) -> None:

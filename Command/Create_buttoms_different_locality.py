@@ -1,4 +1,5 @@
 from telebot import types
+from Sorted.SortedBy import sorted_by
 
 
 def create_buttons_multiple_locality(message, bot, counties) -> None:
@@ -23,6 +24,10 @@ def callback_worker(call, bot) -> None:
     """
     handler touch command
     :param call: callback message
+    :param bot:bot polling
     :return:
     """
-    pass
+    from .Create_buttons_county import global_village
+
+    if "".join(map(str, global_village)).strip() in call.data:
+        sorted_by(bot, call, call.data)
