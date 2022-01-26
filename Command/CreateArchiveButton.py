@@ -3,7 +3,11 @@ This module create archive buttons to show contact and adress
 """
 
 
-def create_info_about_archive():
+def create_info_about_archive() -> (list, list, list):
+    """
+    This module initialize archive name list, site list and coordinates to find in a map
+    :return: lists of archives inforamtion
+    """
     archive = [
         "Державна архівна служба України\n",
         "\nУкраїнський науково-дослідний інститут архівної справи та документознавства\n",
@@ -128,13 +132,19 @@ def create_info_about_archive():
 
 
 def show_archive(bot, call):
+    """
+    This module set archive information to bot chat
+    :param bot: telegram bot api
+    :param call: message chat id
+    :return: None
+    """
     archive, site, coordinates = create_info_about_archive()
     message = " ".join([str(elem) for elem in generate_mes(archive, site, coordinates)])
     if len(message) > 4096:
         for x in range(0, len(message), 4096):
             bot.send_message(
                 call.chat.id,
-                message[x : x + 4096],
+                message[x: x + 4096],
                 parse_mode="Markdown",
                 disable_web_page_preview=True,
             )
@@ -144,7 +154,14 @@ def show_archive(bot, call):
         )
 
 
-def generate_mes(archive, site, coordinates):
+def generate_mes(archive: list, site: list, coordinates: list) -> list:
+    """
+    Creates messange to send to chat
+    :param archive: list of archive name
+    :param site: site of each archive
+    :param coordinates: map coordinates in google
+    :return: new combine list
+    """
     message = []
     for index in range(len(archive)):
         message.append(
