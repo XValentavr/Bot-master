@@ -12,6 +12,10 @@ from MySQLCommand.get_multiple_locality import get_multiple
 from RegexMethods.Regex_second import generate_message
 from Sorted import SortedBy
 
+global_village = ""
+
+flag = False
+
 
 def visualization(message, bot) -> None:
     """
@@ -21,15 +25,21 @@ def visualization(message, bot) -> None:
     :return: None
     """
     village = message.text
+    global global_village
+    global_village = village
     _, count = get_Churches(village.strip(), " ")
     if count == 0:
         bot.send_message(
             message.chat.id, " Извините, ничего не найдено.\nПроверьте данные"
         )
     if count >= 5:
+        global flag
         if len(get_multiple(village)) <= 5:
+            flag = False
             SortedBy.sorted_by(bot, message, village)
         else:
+
+            flag = True
             create_buttons_multiple_locality(
                 bot=bot, message=message, counties=get_multiple(village)
             )

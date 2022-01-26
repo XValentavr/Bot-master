@@ -16,6 +16,7 @@ def get_Churches(name: str, county: str) -> [list, int]:
     """
     name1 = name.rstrip()
     name1 = "".join(map(str, name1))
+    name1 = re.escape(name1)
     churches = []
     connection = connect()
     query = "select church from catalog_of_metrics  where village regexp  (%s)and county regexp  (%s)"

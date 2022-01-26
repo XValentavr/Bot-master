@@ -12,7 +12,9 @@ def to_order(message, bot) -> None:
     """
     bot.send_message(
         message.chat.id,
-        "За дополнительной информацией обращайтесь к @Valentavr\n"
-        "Или отправьте письмо на почтовый ящик **iwilly17@gmail.com**",
-        parse_mode="Markdown",
+        "За дополнительной информацией обращайтесь к @Valentavr\n\n"
+        "Или отправьте письмо на почтовый ящик iwilly17@gmail.com\n\n"
+        "Связаться с нами в <a href='https://www.facebook.com/groups/502963204384298'>Facebook</a>",
+        parse_mode="HTML",
+        disable_web_page_preview=True,
     )

@@ -14,8 +14,10 @@ global_village = ""
 
 def sorted_by(bot, message, village: str) -> None:
     """
-    creates buttons to sort info
-    :param message: message
+    create sorted buttons
+    :param bot: bot token
+    :param message: message from user
+    :param village: current village to show
     :return:
     """
     keyboard = types.InlineKeyboardMarkup()
@@ -46,5 +48,5 @@ def callback_worker(message, bot):
             village=global_village,
             county=" ",
         )
-    if message.data == "Уезд":
+    elif message.data == "Уезд":
         create_buttons_county(message=message, bot=bot, village=global_village)

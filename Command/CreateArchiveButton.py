@@ -144,7 +144,7 @@ def show_archive(bot, call):
         for x in range(0, len(message), 4096):
             bot.send_message(
                 call.chat.id,
-                message[x: x + 4096],
+                message[x : x + 4096],
                 parse_mode="Markdown",
                 disable_web_page_preview=True,
             )

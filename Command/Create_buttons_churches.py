@@ -11,6 +11,7 @@ from RegexMethods.Regex_second import generate_message
 
 global_village = ""
 global_county = ""
+flag = True
 
 
 def create_buttons_churches(message, bot, cities: list, village, county) -> None:
@@ -36,6 +37,9 @@ def create_buttons_churches(message, bot, cities: list, village, county) -> None
 
     global global_village
     global_village = village
+
+    global flag
+    flag = False
 
 
 def callback_worker(call, bot) -> None:

@@ -60,13 +60,9 @@ def process_village(message):
 
 @bot.message_handler(commands=["order"])
 def process_city_step(message):
-    try:
-        from SendLetter.SendLetter import to_order
+    from SendLetter.SendLetter import to_order
 
-        to_order(message, bot)
-
-    except Exception:
-        bot.reply_to(message, "Произошла ошибка. Перезапустите бота.")
+    to_order(message, bot)
 
 
 @bot.callback_query_handler(
@@ -76,7 +72,10 @@ def select_churches(message):
     SortedBy.callback_worker(message, bot)
     Create_buttons_county.callback_worker(message, bot)
     Create_buttons_churches.callback_worker(message, bot)
-    Create_buttoms_different_locality.callback_worker(message, bot)
+    from ChatVizualization.On_chat import flag
+
+    if flag:
+        Create_buttoms_different_locality.callback_worker(message, bot)
 
 
 @bot.callback_query_handler(
