@@ -15,12 +15,18 @@ def get_Churches(name: str, county: str) -> [list, int]:
     :return: list
     """
     name1 = name.rstrip()
-    name1 = ''.join(map(str, name1))
+    name1 = "".join(map(str, name1))
     churches = []
     connection = connect()
     query = "select church from catalog_of_metrics  where village regexp  (%s)and county regexp  (%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + county + '\\b.*?'),))
+    cursor.execute(
+        query,
+        (
+            (".*?\\" + name1 + "\\b.*?"),
+            (".*?\\" + county + "\\b.*?"),
+        ),
+    )
     result = list(zip(*cursor.fetchall()))
     new_churches = []
     if len(result) != 0:
@@ -29,8 +35,8 @@ def get_Churches(name: str, county: str) -> [list, int]:
         cursor.close()
         connection.close()
         for church in churches:
-            church = re.sub('\(.*', '', church, flags=re.DOTALL)
-            church = re.sub(',.*', '', church, flags=re.DOTALL)
+            church = re.sub("\(.*", "", church, flags=re.DOTALL)
+            church = re.sub(",.*", "", church, flags=re.DOTALL)
             if church.strip() not in new_churches:
                 new_churches.append(church.strip())
     return new_churches, len(new_churches)

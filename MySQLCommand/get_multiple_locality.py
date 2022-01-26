@@ -8,11 +8,11 @@ from MySQLCommand.CreateConnection import connect
 
 def get_multiple(locality: str):
     connection = connect()
-    locality = ''.join(map(str, locality.rstrip()))
+    locality = "".join(map(str, locality.rstrip()))
     query = "select village from catalog_of_metrics where village regexp(%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + locality + '\\b.*?'),))
-    locality = [' '.join(item) for item in cursor.fetchall()]
+    cursor.execute(query, ((".*?\\" + locality + "\\b.*?"),))
+    locality = [" ".join(item) for item in cursor.fetchall()]
     cursor.close()
     connection.close()
     new_locality = []

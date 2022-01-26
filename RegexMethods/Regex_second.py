@@ -15,21 +15,29 @@ def generate_message(res: str) -> str:
     count = 0
     for i in res:
         if i == None:
-            res[count] = ' '
+            res[count] = " "
         count += 1
-    return res[0] + '\n' \
-           + res[1] + '\n' \
-           + res[2] \
-           + res[3] + '\n' \
-           + res[4] + '\n' \
-           + res[5] + '\n' \
-           + res[6] + '\n' \
-           + format_birth(res[7]) \
-           + format_wedding(res[8]) \
-           + format_divorce(res[9]) \
-           + format_death(res[10]) \
-           + format_testament(res[11]) \
-           + format_additional(res[12])
+    return (
+        res[0]
+        + "\n"
+        + res[1]
+        + "\n"
+        + res[2]
+        + res[3]
+        + "\n"
+        + res[4]
+        + "\n"
+        + res[5]
+        + "\n"
+        + res[6]
+        + "\n"
+        + format_birth(res[7])
+        + format_wedding(res[8])
+        + format_divorce(res[9])
+        + format_death(res[10])
+        + format_testament(res[11])
+        + format_additional(res[12])
+    )
 
 
 def remove_new_lines(res: str) -> list:
@@ -66,12 +74,19 @@ def format_birth(birth: str) -> str:
     :param birth: str
     :return: str
     """
-    if birth != ';':
-        birth = '*Метричні книги про народження*;' + birth
+    if birth != ";":
+        birth = "*Метричні книги про народження*;" + birth
     if birth != None:
         birth = replace_semicolon_to_newline(birth)
-        return re.sub(r"^\s?Метричні книги про народження;\s?(.*)$", r"*Метричні книги про народження*", birth,
-                      flags=re.DOTALL) + '\n'
+        return (
+            re.sub(
+                r"^\s?Метричні книги про народження;\s?(.*)$",
+                r"*Метричні книги про народження*",
+                birth,
+                flags=re.DOTALL,
+            )
+            + "\n"
+        )
 
 
 def format_wedding(wedding: str) -> str:
@@ -80,12 +95,19 @@ def format_wedding(wedding: str) -> str:
     :param wedding: str
     :return: str
     """
-    if wedding != ';':
-        wedding = '*Метричні книги про шлюб*;' + wedding
+    if wedding != ";":
+        wedding = "*Метричні книги про шлюб*;" + wedding
     if wedding != None:
         wedding = replace_semicolon_to_newline(wedding)
-        return re.sub(r"^\s?Метричні книги про шлюб;:\s?(.*)$", r"*Метричні книги про шлюб*", wedding,
-                      flags=re.DOTALL) + '\n'
+        return (
+            re.sub(
+                r"^\s?Метричні книги про шлюб;:\s?(.*)$",
+                r"*Метричні книги про шлюб*",
+                wedding,
+                flags=re.DOTALL,
+            )
+            + "\n"
+        )
 
 
 def format_divorce(divorce: str) -> str:
@@ -96,7 +118,7 @@ def format_divorce(divorce: str) -> str:
     """
     if divorce != None:
         divorce = replace_semicolon_to_newline(divorce)
-        return divorce + '\n'
+        return divorce + "\n"
 
 
 def format_death(death: str) -> str:
@@ -105,12 +127,19 @@ def format_death(death: str) -> str:
     :param death: str
     :return: str
     """
-    if death != ';':
-        death = '*Метричні книги про смерть*;' + death
+    if death != ";":
+        death = "*Метричні книги про смерть*;" + death
     if death != None:
         death = replace_semicolon_to_newline(death)
-        return re.sub(r"^\s?Метричні книги про смерть;:\s?(.*)$", r"*Метричні книги про смерть*", death,
-                      flags=re.DOTALL) + '\n'
+        return (
+            re.sub(
+                r"^\s?Метричні книги про смерть;:\s?(.*)$",
+                r"*Метричні книги про смерть*",
+                death,
+                flags=re.DOTALL,
+            )
+            + "\n"
+        )
 
 
 def format_testament(testament: str) -> str:
@@ -121,8 +150,15 @@ def format_testament(testament: str) -> str:
     """
     if testament != None:
         testament = replace_semicolon_to_newline(testament)
-        return re.sub(r"^\s?сповідні відомості:\s?(.*)$", r"*сповідні відомості:*`", testament,
-                      flags=re.DOTALL) + '\n'
+        return (
+            re.sub(
+                r"^\s?сповідні відомості:\s?(.*)$",
+                r"*сповідні відомості:*`",
+                testament,
+                flags=re.DOTALL,
+            )
+            + "\n"
+        )
 
 
 def format_additional(additional: str) -> str:
@@ -133,7 +169,7 @@ def format_additional(additional: str) -> str:
     """
     if additional != None:
         additional = replace_semicolon_to_newline(additional)
-        return additional + '\n'
+        return additional + "\n"
 
 
 def replace_semicolon_to_newline(string: str) -> str:
@@ -143,4 +179,4 @@ def replace_semicolon_to_newline(string: str) -> str:
     :return: str
     """
     if string != None:
-        return string.replace(';', '\n')
+        return string.replace(";", "\n")

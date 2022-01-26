@@ -13,12 +13,11 @@ def connect():
     :return: connection of database
     """
     try:
-        conn = mysql.connector.connect(host='localhost',
-                                       database='genealogyboutique',
-                                       user='root',
-                                       password='root')
+        conn = mysql.connector.connect(
+            host="localhost", database="genealogyboutique", user="root", password="root"
+        )
     except Error as e:
-        print('Error:', e)
+        print("Error:", e)
 
     finally:
         return conn

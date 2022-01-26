@@ -15,9 +15,12 @@ def create_buttons_multiple_locality(message, bot, counties) -> None:
     for i in counties:
         key = types.InlineKeyboardButton(text=i, callback_data=i)
         keyboard.add(key)
-    bot.send_message(message.from_user.id, text='Найдено разные населенные пункты по уездам!'
-                                                '\nВыберите населенный пункт для большей информации ',
-                     reply_markup=keyboard)
+    bot.send_message(
+        message.from_user.id,
+        text="Найдено разные населенные пункты по уездам!"
+        "\nВыберите населенный пункт для большей информации ",
+        reply_markup=keyboard,
+    )
 
 
 def callback_worker(call, bot) -> None:

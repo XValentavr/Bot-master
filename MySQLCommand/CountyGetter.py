@@ -17,7 +17,13 @@ def get_county(name: str, county: str) -> list:
     connection = connect()
     query = "select distinct county from catalog_of_metrics  where village regexp  (%s) and county regexp(%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + county + '\\b.*?'),))
+    cursor.execute(
+        query,
+        (
+            (".*?\\" + name1 + "\\b.*?"),
+            (".*?\\" + county + "\\b.*?"),
+        ),
+    )
     result = list(zip(*cursor.fetchall()))
     county = []
     if len(result) != 0:
@@ -26,8 +32,8 @@ def get_county(name: str, county: str) -> list:
         cursor.close()
         connection.close()
         for cnt in county:
-            cnt = re.sub('\(.*', '', cnt, flags=re.DOTALL)
-            cnt = re.sub(',.*', '', cnt, flags=re.DOTALL)
+            cnt = re.sub("\(.*", "", cnt, flags=re.DOTALL)
+            cnt = re.sub(",.*", "", cnt, flags=re.DOTALL)
             if cnt.strip() not in county:
                 county.append(cnt.strip())
     return county

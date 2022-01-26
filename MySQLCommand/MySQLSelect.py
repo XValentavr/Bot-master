@@ -13,12 +13,12 @@ def SelectOperation(name: str) -> list:
     :param current_province: str
     :return: list
     """
-    name = ''.join(map(str, name.rstrip()))
+    name = "".join(map(str, name.rstrip()))
     connection = connect()
 
     query = "select archive.Name, province,eparchy,county,religion,village,church, birth, wedding, divorce, death, testament, additional from catalog_of_metrics  join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name + '\\b.*?'),))
+    cursor.execute(query, ((".*?\\" + name + "\\b.*?"),))
     result = cursor.fetchall()
     metrics = [item for item in result]
     cursor.close()
