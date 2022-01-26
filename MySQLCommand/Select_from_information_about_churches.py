@@ -22,7 +22,6 @@ def select_operation_get_churches(current_church: str, current_village: str, cur
         ('.*?\\' + current_church + '\\b.*?'), ('.*?\\' + new_village + '\\b.*?'),
         ('.*?\\' + current_region + '\\b.*?'),))
     result = cursor.fetchall()
-    metric = [churches for churches in result]
     cursor.close()
     connection.close()
-    return metric
+    return [churches for churches in result]

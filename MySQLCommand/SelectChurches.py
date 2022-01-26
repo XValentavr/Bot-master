@@ -7,11 +7,11 @@ from MySQLCommand.CreateConnection import connect
 import re
 
 
-def get_Churches(name: str, region: str) -> list:
+def get_Churches(name: str, county: str) -> [list, int]:
     """
     get all churches of current county
     :param name: str
-    :param region: str
+    :param county: str
     :return: list
     """
     name1 = name.rstrip()
@@ -20,7 +20,7 @@ def get_Churches(name: str, region: str) -> list:
     connection = connect()
     query = "select church from catalog_of_metrics  where village regexp  (%s)and county regexp  (%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + region + '\\b.*?'),))
+    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + county + '\\b.*?'),))
     result = list(zip(*cursor.fetchall()))
     new_churches = []
     if len(result) != 0:

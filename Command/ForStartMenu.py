@@ -1,7 +1,7 @@
 from telebot import types
 
 
-def someAction(message, bot):
+def some_action(message, bot):
     keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     key_search = types.KeyboardButton(text='/search')
     key_info = types.KeyboardButton(text='/info')

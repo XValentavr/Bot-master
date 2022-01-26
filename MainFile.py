@@ -1,11 +1,11 @@
 import telebot
 from telebot import types
-from Command import CreateButtons as CreateButtons, Create_buttons_churches, Create_buttoms_different_locality
+from Command import CreateButtons as CreateButtons, Create_buttons_churches, Create_buttons_county, \
+    Create_buttoms_different_locality
+
 from Command import ForStartMenu as ForStartMenu
 from ChatVizualization.On_chat import visualization
-from ChatVizualization import On_chat
 from Sorted import SortedBy
-from Command import Create_buttons_county
 
 bot = telebot.TeleBot('1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw')
 user_dict_mysql = {}
@@ -23,12 +23,12 @@ def show_help(message):
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    ForStartMenu.someAction(message, bot)
+    ForStartMenu.some_action(message, bot)
 
 
 @bot.message_handler(commands=['reset'])
 def send_welcome(message):
-    ForStartMenu.someAction(message, bot)
+    ForStartMenu.some_action(message, bot)
 
 
 @bot.message_handler(commands=['search'])
@@ -55,22 +55,10 @@ def process_city_step(message):
 
 @bot.callback_query_handler(func=lambda message: True)
 def select_churches(message):
-    if len(On_chat.global_cities) == 0:
-        On_chat.global_cities = [None for _ in range(1)]
-    if On_chat.global_cities[0] is None:
-        On_chat.global_cities[0] = ' '
-    Create_buttoms_different_locality.callback_worker(message, bot, On_chat.CURRENT_CITY)
-    from Command.Create_buttoms_different_locality import button_village
-    if button_village != '' and "".join(map(str, On_chat.CURRENT_CITY)).strip() in "".join(
-            map(str, button_village)).strip():
-        village = button_village
-    else:
-        village = '. ' + "".join(map(str, On_chat.CURRENT_CITY)).strip()
-    SortedBy.callback_worker(message, bot, village, On_chat.current_region)
-    Create_buttons_churches.callback_worker(message, bot, On_chat.global_cities, village,
-                                            On_chat.current_region)
-    Create_buttons_county.callback_worker(message, bot, village, On_chat.current_region)
-    CreateButtons.callback_worker(message, bot)
+    SortedBy.callback_worker(message, bot)
+    Create_buttoms_different_locality.callback_worker(message, bot)
+    Create_buttons_county.callback_worker(message, bot)
+    Create_buttons_churches.callback_worker(message, bot)
 
 
 bot.polling(none_stop=True, interval=0, allowed_updates=None)

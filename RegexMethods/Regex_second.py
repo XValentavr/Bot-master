@@ -32,7 +32,7 @@ def generate_message(res: str) -> str:
            + format_additional(res[12])
 
 
-def remove_new_lines(res: str) -> str:
+def remove_new_lines(res: str) -> list:
     """
     remove new lines
     :param res:str
@@ -46,7 +46,7 @@ def remove_new_lines(res: str) -> str:
         return new_res
 
 
-def remove_forbidden_characters(res: str) -> str:
+def remove_forbidden_characters(res: str) -> list:
     """
     delete forbidden characters from string
     :param res: str

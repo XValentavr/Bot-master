@@ -6,19 +6,18 @@ from MySQLCommand.CreateConnection import connect
 import re
 
 
-def get_county(name: str, region: str) -> list:
+def get_county(name: str, county: str) -> list:
     """
     gets information about county from database
     :param name: str
-    :param region: str
+    :param county: str
     :return: list
     """
     name1 = name.rstrip()
     connection = connect()
     query = "select distinct county from catalog_of_metrics  where village regexp  (%s) and county regexp(%s)"
     cursor = connection.cursor()
-    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + region + '\\b.*?'),))
-    print()
+    cursor.execute(query, (('.*?\\' + name1 + '\\b.*?'), ('.*?\\' + county + '\\b.*?'),))
     result = list(zip(*cursor.fetchall()))
     county = []
     if len(result) != 0:

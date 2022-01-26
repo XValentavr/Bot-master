@@ -12,10 +12,7 @@ def get_multiple(locality: str):
     query = "select village from catalog_of_metrics where village regexp(%s)"
     cursor = connection.cursor()
     cursor.execute(query, (('.*?\\' + locality + '\\b.*?'),))
-    locality = []
-    result = cursor.fetchall()
-    for item in result:
-        locality.append(' '.join(item))
+    locality = [' '.join(item) for item in cursor.fetchall()]
     cursor.close()
     connection.close()
     new_locality = []

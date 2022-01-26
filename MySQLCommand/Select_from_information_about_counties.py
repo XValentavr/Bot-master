@@ -21,7 +21,6 @@ def select_operation_get_counties(current_county: str, current_village: list) ->
     cursor.execute(query, (
         ('.*?\\' + current_county + '\\b.*?'), ('.*?\\' + new_village + '\\b.*?'),))
     result = cursor.fetchall()
-    metric = [res for res in result]
     cursor.close()
     connection.close()
-    return metric
+    return [res for res in result]

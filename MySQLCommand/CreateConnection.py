@@ -10,7 +10,7 @@ from mysql.connector import MySQLConnection, Error
 def connect():
     """
     create connection
-    :return: connection
+    :return: connection of database
     """
     try:
         conn = mysql.connector.connect(host='localhost',
