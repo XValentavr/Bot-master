@@ -13,7 +13,6 @@ from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
 
 bot = telebot.TeleBot("1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw")
-user_dict_mysql = {}
 
 
 @bot.message_handler(commands=["info"])
@@ -71,7 +70,8 @@ def process_city_step(message):
 
 
 @bot.callback_query_handler(
-    func=lambda message: message.data not in ["help", "start", "info_first", "archive", "form"]
+    func=lambda message: message.data
+                         not in ["help", "start", "info_first", "archive", "form"]
 )
 def select_churches(message):
     SortedBy.callback_worker(message, bot)
@@ -84,7 +84,8 @@ def select_churches(message):
 
 
 @bot.callback_query_handler(
-    func=lambda message: message.data in ["help", "start", "info_first", "archive", "form"]
+    func=lambda message: message.data
+                         in ["help", "start", "info_first", "archive", "form"]
 )
 def help_handler(message):
     CreateButtons.callback_worker(message, bot)

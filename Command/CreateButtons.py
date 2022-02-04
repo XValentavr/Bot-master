@@ -12,6 +12,7 @@ info_first = ["Получить информацию о возможностях
 archive = ["Получить место расположение архива и почтовый адрес"]
 form = ["Оставить заяву для исследования"]
 
+
 def create_buttons(message, bot) -> None:
     """
     create inline buttons to show more info

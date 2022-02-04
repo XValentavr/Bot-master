@@ -1,3 +1,4 @@
+amocrm-api-wrapper==0.0.12
 black==21.12b0
 certifi==2021.10.8
 charset-normalizer==2.0.6
