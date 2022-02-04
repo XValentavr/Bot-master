@@ -2,17 +2,17 @@
 This module creates user name
 """
 import re
+from FormCRM import sendletter
 
-user_dict = {"name": None, 'phone': None, 'email': None, 'info': None}
+user_dict = {"name": None, "phone": None, "email": None, "info": None}
 
 
 class Mono:
     """
     This class crete monostate pattern
     """
-    __dict = {
-        'bot': lambda instance: instance
-    }
+
+    __dict = {"bot": lambda instance: instance}
 
     def __init__(self):
         self.__dict__ = Mono.__dict
@@ -44,7 +44,7 @@ def register_name(message):
         name = message.text
         if len(name) and name.isalpha():
             bot_value.bot.send_message(message.chat.id, "Введите номер телефона")
-            user_dict['name'] = name
+            user_dict["name"] = name
             bot_value.bot.register_next_step_handler(message, register_phone)
         else:
             bot_value.bot.send_message(
@@ -118,6 +118,7 @@ def final_register(message):
             "Вы успешно зарегестрировались. С Вами свяжется наш администратор",
         )
         user_dict["info"] = message.text
+        sendletter.send_mail(user_dict)
     except Exception:
         bot_value.bot.send_message(message.chat.id, "Ошибка, попробуйте заново")
     return user_dict

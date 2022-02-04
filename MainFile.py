@@ -65,7 +65,7 @@ def process_village(message):
 
 @bot.message_handler(commands=["order"])
 def process_city_step(message):
-    from SendLetter.SendLetter import to_order
+    from SendInfoToConnect.SendInfo import to_order
 
     to_order(message, bot)
 
