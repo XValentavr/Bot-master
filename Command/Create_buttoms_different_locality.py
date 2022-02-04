@@ -32,7 +32,5 @@ def callback_worker(call, bot) -> None:
     """
     from ChatVizualization.On_chat import global_village
 
-    print("call data is ", call.data)
-    print(global_village, " is")
     if "".join(map(str, global_village)).strip() in call.data:
         sorted_by(bot, call, call.data)

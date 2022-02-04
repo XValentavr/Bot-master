@@ -24,8 +24,8 @@ def get_Churches(name: str, county: str) -> [list, int]:
     cursor.execute(
         query,
         (
-            (".*?\\" + name1 + "\\b.*?"),
-            (".*?\\" + county + "\\b.*?"),
+            (name1),
+            (county),
         ),
     )
     result = list(zip(*cursor.fetchall()))

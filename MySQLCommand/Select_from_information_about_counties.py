@@ -2,6 +2,8 @@
 This module show all information if county mod is selected
 """
 # local imports
+import re
+
 from MySQLCommand.CreateConnection import connect
 
 
@@ -13,6 +15,8 @@ def select_operation_get_counties(current_county: str, current_village: list) ->
     :return: list
     """
     new_village = "".join(map(str, current_village.rstrip()))
+    new_village = re.escape(new_village)
+
     connection = connect()
     query = (
         "select archive.Name, province,eparchy,village,religion,county,church,birth,wedding,divorce, death,testament,"
@@ -23,8 +27,8 @@ def select_operation_get_counties(current_county: str, current_village: list) ->
     cursor.execute(
         query,
         (
-            (".*?\\" + current_county + "\\b.*?"),
-            (".*?\\" + new_village + "\\b.*?"),
+            (current_county),
+            (new_village),
         ),
     )
     result = cursor.fetchall()

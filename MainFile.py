@@ -71,7 +71,7 @@ def process_city_step(message):
 
 @bot.callback_query_handler(
     func=lambda message: message.data
-                         not in ["help", "start", "info_first", "archive", "form"]
+    not in ["help", "start", "info_first", "archive", "form"]
 )
 def select_churches(message):
     SortedBy.callback_worker(message, bot)
@@ -85,7 +85,7 @@ def select_churches(message):
 
 @bot.callback_query_handler(
     func=lambda message: message.data
-                         in ["help", "start", "info_first", "archive", "form"]
+    in ["help", "start", "info_first", "archive", "form"]
 )
 def help_handler(message):
     CreateButtons.callback_worker(message, bot)

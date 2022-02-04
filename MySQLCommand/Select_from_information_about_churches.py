@@ -3,6 +3,8 @@ This module gets data from database if church mod is selected
 """
 
 # local imports
+import re
+
 from MySQLCommand.CreateConnection import connect
 
 
@@ -17,15 +19,17 @@ def select_operation_get_churches(
     :return: list
     """
     new_village = "".join(map(str, current_village.rstrip()))
+    new_village = re.escape(new_village)
+
     connection = connect()
     query = "select archive.Name, province,eparchy,village,county,religion,church,birth,wedding,divorce, death,testament,additional from catalog_of_metrics left join archive archive on archive.num = catalog_of_metrics.archive where church regexp  (%s)and village regexp(%s)  and county regexp(%s)"
     cursor = connection.cursor()
     cursor.execute(
         query,
         (
-            (".*?\\" + current_church + "\\b.*?"),
-            (".*?\\" + new_village + "\\b.*?"),
-            (".*?\\" + current_region + "\\b.*?"),
+            (current_church),
+            (new_village),
+            (current_region),
         ),
     )
     result = cursor.fetchall()

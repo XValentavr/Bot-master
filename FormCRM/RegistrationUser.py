@@ -3,8 +3,9 @@ This module creates user name
 """
 import re
 from FormCRM import sendletter
+from datetime import date
 
-user_dict = {"name": None, "phone": None, "email": None, "info": None}
+user_dict = {"name": None, "phone": None, "email": None, "info": None, "data": None}
 
 
 class Mono:
@@ -118,6 +119,7 @@ def final_register(message):
             "Вы успешно зарегестрировались. С Вами свяжется наш администратор",
         )
         user_dict["info"] = message.text
+        user_dict["data"] = date.today().strftime("%d/%m/%Y")
         sendletter.send_mail(user_dict)
     except Exception:
         bot_value.bot.send_message(message.chat.id, "Ошибка, попробуйте заново")

@@ -1,11 +1,13 @@
 """
 This module use amoCRM api to enter data
 """
+import execjs
+import js2py
 
-from amocrm_api import AmoLegacyClient
-from amocrm_api import AmoOAuthClient
-
-client = AmoLegacyClient(
-    "olga.ivanova@genealogy.boutique", "vanilla0655", "https://www.amocrm.ru/"
-)
-print(client)
+un = """
+function sample()
+{
+    console.log('hello')
+}
+"""
+js2py.eval_js(un)()
