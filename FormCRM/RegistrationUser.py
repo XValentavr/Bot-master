@@ -86,13 +86,12 @@ def register_phone(message):
 
 def register_email(message):
     """
-    This module registrate user email and gets all info
+    This module registrates user email and gets all info
     :param message:  bot message
     :return: None
     """
     regex = re.compile(
-        r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+"
-    )
+        r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+")
 
     if re.fullmatch(regex, message.text):
         user_dict["email"] = message.text

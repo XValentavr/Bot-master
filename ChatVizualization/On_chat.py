@@ -36,6 +36,7 @@ def visualization(message, bot) -> None:
         global flag
         if len(get_multiple(village)) <= 5:
             flag = False
+            village = ".*?\\" + village + "\\b.*?"
             SortedBy.sorted_by(bot, message, village)
         else:
 
@@ -57,7 +58,7 @@ def write_if_less(message, bot, village):
         if len(messanges) > 4096:
             for x in range(0, len(messanges), 4096):
                 bot.send_message(
-                    message.chat.id, messanges[x : x + 4096], parse_mode="Markdown"
+                    message.chat.id, messanges[x: x + 4096], parse_mode="Markdown"
                 )
         else:
             bot.send_message(message.chat.id, messanges, parse_mode="Markdown")

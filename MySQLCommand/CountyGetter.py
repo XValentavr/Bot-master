@@ -14,7 +14,8 @@ def get_county(name: str, county: str) -> list:
     :return: list
     """
     name1 = name.rstrip()
-    name1 = re.escape(name1)
+    if not name1.startswith('.*?'):
+        name1 = re.escape(name1)
 
     connection = connect()
     query = "select distinct county from catalog_of_metrics  where village regexp  (%s) and county regexp(%s)"
