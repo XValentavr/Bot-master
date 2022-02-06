@@ -113,14 +113,12 @@ def final_register(message):
     :param message: information about chat
     :return: None
     """
-    try:
-        bot_value.bot.send_message(
-            message.chat.id,
-            "Вы успешно зарегестрировались. С Вами свяжется наш администратор",
-        )
-        user_dict["info"] = message.text
-        user_dict["data"] = date.today().strftime("%d/%m/%Y")
-        sendletter.send_mail(user_dict)
-    except Exception:
-        bot_value.bot.send_message(message.chat.id, "Ошибка, попробуйте заново")
+    bot_value.bot.send_message(
+        message.chat.id,
+        "Вы успешно зарегестрировались. С Вами свяжется наш администратор",
+    )
+    user_dict["info"] = message.text
+    user_dict["data"] = date.today().strftime("%d/%m/%Y")
+    sendletter.send_mail(user_dict)
+
     return user_dict
