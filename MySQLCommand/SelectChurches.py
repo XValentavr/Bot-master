@@ -16,7 +16,7 @@ def get_Churches(name: str, county: str) -> [list, int]:
     """
     name1 = name.rstrip()
     name1 = "".join(map(str, name1))
-    if not name1.startswith('.*?'):
+    if not name1.startswith(".*?"):
         name1 = re.escape(name1)
     churches = []
     connection = connect()

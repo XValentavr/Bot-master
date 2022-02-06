@@ -14,12 +14,14 @@ global_county = ""
 flag = True
 
 
-def create_buttons_churches(message, bot, cities: list, village, county) -> None:
+def create_buttons_churches(message, bot, cities: list, village: str, county: str) -> None:
     """
     creates buttons
     :param message: message
     :param bot: telebot
     :param cities: list
+    :param village:current village
+    :param county: current county
     :return: None
     """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
@@ -29,7 +31,7 @@ def create_buttons_churches(message, bot, cities: list, village, county) -> None
     bot.send_message(
         message.from_user.id,
         text="Здесь все церкви по указанному городу!"
-        "\nВыберите команду для большей информации ",
+             "\nВыберите команду для большей информации ",
         reply_markup=keyboard,
     )
     global global_county
@@ -54,10 +56,10 @@ def callback_worker(call, bot) -> None:
     res = select_operation_get_churches(cur_church, global_village, global_county)
     for church in res:
         reg_1 = generate_message(church)
-        if len(reg_1) > 4096:
-            for x in range(0, len(reg_1), 4096):
+        if len(reg_1) > 4082:
+            for x in range(0, len(reg_1)-14, 4082):
                 bot.send_message(
-                    call.message.chat.id, reg_1[x : x + 4096], parse_mode="Markdown"
+                    call.message.chat.id, reg_1[x: x + 4082], parse_mode="Markdown"
                 )
                 continue
         else:

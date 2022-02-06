@@ -55,10 +55,10 @@ def write_if_less(message, bot, village):
     churches = SelectOperation(village)
     for i in churches:
         messanges = generate_message(i)
-        if len(messanges) > 4096:
-            for x in range(0, len(messanges), 4096):
+        if len(messanges) > 4082:
+            for x in range(0, len(messanges) - 14, 4082):
                 bot.send_message(
-                    message.chat.id, messanges[x: x + 4096], parse_mode="Markdown"
+                    message.chat.id, messanges[x: x + 4082], parse_mode="Markdown"
                 )
         else:
             bot.send_message(message.chat.id, messanges, parse_mode="Markdown")

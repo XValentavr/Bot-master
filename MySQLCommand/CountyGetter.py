@@ -14,7 +14,7 @@ def get_county(name: str, county: str) -> list:
     :return: list
     """
     name1 = name.rstrip()
-    if not name1.startswith('.*?'):
+    if not name1.startswith(".*?"):
         name1 = re.escape(name1)
 
     connection = connect()
