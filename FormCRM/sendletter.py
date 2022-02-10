@@ -27,9 +27,8 @@ def send_mail(user_dict: dict) -> None:
     message["From"] = 'Бот Каталогу Метричних Книг Ураїни "Генеалогія"'
     message["To"] = ['iwilly17@gmail.com']
     message.set_content(set_content(user_dict=user_dict))
-    server = smtplib.SMTP("smtp.gmail.com:587")
+    server = smtplib.SMTP_SSL('smtp.googlemail.com', 465)
     server.ehlo()
-    server.starttls()
     server.login(user, password)
     server.send_message(message)
     server.quit()
