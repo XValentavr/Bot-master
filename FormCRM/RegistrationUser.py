@@ -120,5 +120,8 @@ def final_register(message):
     user_dict["info"] = message.text
     user_dict["data"] = date.today().strftime("%d/%m/%Y")
     sendletter.send_mail(user_dict)
-
+    bot_value.bot.send_message(
+        469236353,
+        f"Заявка від:\n{user_dict['name']}\n{user_dict['email']}\n+{user_dict['phone']}\n\n" \
+        f"Текст повідомлення:\n{user_dict['info']}\nДата\n{user_dict['data']}")
     return user_dict
