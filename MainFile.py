@@ -1,3 +1,5 @@
+import logging
+
 import telebot
 from telebot import types
 from Command import (
@@ -13,6 +15,7 @@ from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
 
 bot = telebot.TeleBot("1362750182:AAF8LlEm790xbapCImuE5Bd77LXp6WdEeuw")
+logging.basicConfig(filename="sample.log", level=logging.INFO)
 
 
 @bot.message_handler(commands=["info"])

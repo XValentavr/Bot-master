@@ -10,6 +10,7 @@ from MySQLCommand.MySQLSelect import SelectOperation
 from MySQLCommand.SelectChurches import get_Churches
 from MySQLCommand.get_multiple_locality import get_multiple
 from RegexMethods.Regex_second import generate_message
+from RegexMethods.delete_if_more_than_64 import del_if_64
 from Sorted import SortedBy
 
 global_village = ""
@@ -39,10 +40,10 @@ def visualization(message, bot) -> None:
             village = ".*?\\" + village + "\\b.*?"
             SortedBy.sorted_by(bot, message, village)
         else:
-
             flag = True
+            village = get_multiple(village)
             create_buttons_multiple_locality(
-                bot=bot, message=message, counties=get_multiple(village)
+                bot=bot, message=message, counties=del_if_64(village, len(village))
             )
     else:
         write_if_less(message, bot, village)
