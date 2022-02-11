@@ -14,7 +14,7 @@ def connect():
     """
     try:
         conn = mysql.connector.connect(
-            host="localhost", database="genealogyboutique", user="root", password="root"
+            host="localhost", database="genealogyboutique", user="myuser", password="mypass"
         )
     except Error as e:
         print("Error:", e)
