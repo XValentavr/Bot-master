@@ -5,12 +5,12 @@ This module shows posibilities of command of bot
 # local imports
 from telebot import types
 
-help = ["Получаем информацию о всех командах"]
-start = ["Начало работы проекта"]
-searchFor = ["Поиск информации"]
-info_first = ["Получить информацию о возможностях"]
-archive = ["Получить место расположение архива и почтовый адрес"]
-form = ["Оставить заяву для исследования"]
+help = ["Отримуємо інформацію про всі команди"]
+start = ["Початок роботи бота"]
+searchFor = ["Пошук інформації"]
+info_first = ["Отримати інформацію про можливості"]
+archive = ["Отримати місцезнаходження архіву та поштовий адрес"]
+form = ["Залишити заяву для дослідження"]
 
 
 def create_buttons(message, bot) -> None:
@@ -35,7 +35,7 @@ def create_buttons(message, bot) -> None:
     keyboard.add(key_form)
     bot.send_message(
         message.from_user.id,
-        text="Здесь все команды!" "\nВыберите команду для большей информации ",
+        text="Тут всі команди!" "\nВиберіть команду для отримання інформації",
         reply_markup=keyboard,
     )
 

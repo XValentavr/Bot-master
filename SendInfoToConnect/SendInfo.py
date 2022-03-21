@@ -12,8 +12,8 @@ def to_order(message, bot) -> None:
     """
     bot.send_message(
         message.chat.id,
-        "Связаться с нами в <a href='https://www.facebook.com/groups/502963204384298'>Facebook</a>"
-        " Или непосредственно заполнить форму, используя команду /form",
+        "Зв'язатися з нами в <a href='https://www.facebook.com/groups/502963204384298'>Facebook</a>"
+        " Або заповнити форму, використовуючи команду /form",
         parse_mode="HTML",
         disable_web_page_preview=True,
     )

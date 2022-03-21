@@ -22,7 +22,7 @@ logging.basicConfig(filename="sample.log", level=logging.INFO)
 def show_info(message):
     bot.send_message(
         message.chat.id,
-        "Вы можете найти метрики в архивах Украины, используя этого бота.",
+        "Ви можете знайти метрики в архівах України, використовуючи цього бота.",
     )
 
 
@@ -56,7 +56,7 @@ def sql_operation(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardRemove(selective=False)
     msg = bot.send_message(
-        chat_id, "Введите название населенного пункта", reply_markup=markup
+        chat_id, "Введіть назву населеного пункту.", reply_markup=markup
     )
     bot.register_next_step_handler(msg, process_village)
 
@@ -74,7 +74,7 @@ def process_city_step(message):
 
 @bot.callback_query_handler(
     func=lambda message: message.data
-    not in ["help", "start", "info_first", "archive", "form"]
+                         not in ["help", "start", "info_first", "archive", "form"]
 )
 def select_churches(message):
     SortedBy.callback_worker(message, bot)
@@ -88,7 +88,7 @@ def select_churches(message):
 
 @bot.callback_query_handler(
     func=lambda message: message.data
-    in ["help", "start", "info_first", "archive", "form"]
+                         in ["help", "start", "info_first", "archive", "form"]
 )
 def help_handler(message):
     CreateButtons.callback_worker(message, bot)

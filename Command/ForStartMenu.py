@@ -14,5 +14,5 @@ def some_action(message, bot):
     keyboard.add(key_archive)
     keyboard.add(key_form)
     bot.send_message(
-        message.from_user.id, text="Выберите команду", reply_markup=keyboard
+        message.from_user.id, text="Виберіть команду", reply_markup=keyboard
     )

@@ -21,13 +21,13 @@ def sorted_by(bot, message, village: str) -> None:
     :return:
     """
     keyboard = types.InlineKeyboardMarkup()
-    key_church = types.InlineKeyboardButton(text="По уездам", callback_data="Уезд")
-    key_county = types.InlineKeyboardButton(text="По церквям", callback_data="Церковь")
+    key_church = types.InlineKeyboardButton(text="По повітам", callback_data="Уезд")
+    key_county = types.InlineKeyboardButton(text="По церквам", callback_data="Церковь")
     keyboard.add(key_church)
     keyboard.add(key_county)
     bot.send_message(
         message.from_user.id,
-        text="Выберите, как хотите вывести данные",
+        text="Виберіть, як Ви хочете вивести дані",
         reply_markup=keyboard,
     )
     global global_village

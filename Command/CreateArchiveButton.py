@@ -167,10 +167,10 @@ def generate_mes(archive: list, site: list, coordinates: list) -> list:
         message.append(
             "\n"
             + archive[index]
-            + " *Официальный сайт\n*"
+            + " *Офіційний сайт\n*"
             + site[index].strip()
             + "\t"
-            + "*Месторасположение*\n"
+            + "*Місцезнаходження*\n"
             + coordinates[index]
         )
     return message

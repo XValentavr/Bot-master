@@ -31,7 +31,7 @@ def init_registration(bot, message):
     """
 
     bot_value.bot = bot
-    bot_value.bot.send_message(message.chat.id, "Введите свое имя. (Для выхода введите exit)")
+    bot_value.bot.send_message(message.chat.id, "Введіть ім'я. (Для виходу напишіть exit)")
     bot_value.bot.register_next_step_handler(message, register_name)
 
 
@@ -50,17 +50,17 @@ def register_name(message):
 
         else:
             if len(name) and name.isalpha():
-                bot_value.bot.send_message(message.chat.id, "Введите номер телефона. (Для выхода введите exit)")
+                bot_value.bot.send_message(message.chat.id, "Введіть номер телефону.(Для виходу напишіть exit)")
                 user_dict["name"] = name
                 bot_value.bot.register_next_step_handler(message, register_phone)
             else:
                 bot_value.bot.send_message(
-                    message.chat.id, "Ошибка, имя не должно содержать неподходящие символы."
+                    message.chat.id, "Помилка, ім'я не повинно містити непідходящі символи."
                 )
-                bot_value.bot.send_message(message.chat.id, "Введите имя заново")
+                bot_value.bot.send_message(message.chat.id, "Введіть ім'я заново")
                 bot_value.bot.register_next_step_handler(message, register_name)
     except Exception:
-        bot_value.bot.send_message(message.chat.id, "Ошибка, попробуйте заново")
+        bot_value.bot.send_message(message.chat.id, "Помилка, попробуйте ще раз")
 
 
 def register_phone(message):
@@ -79,19 +79,19 @@ def register_phone(message):
         else:
             if currect_number.isdigit() or currect_number.startswith("+"):
                 user_dict["phone"] = currect_number
-                bot_value.bot.send_message(message.chat.id, "Введите свой email. (Для выхода введите exit)")
+                bot_value.bot.send_message(message.chat.id, "Введіть свій email. (Для виходу напишіть exit)")
                 bot_value.bot.register_next_step_handler(message, register_email)
             else:
                 bot_value.bot.send_message(
                     message.chat.id,
-                    "Вы неправильно ввели номер телефона (номер не должен содержать букв) попробуйте ещё раз",
+                    "Ви неправильно ввели номер телефону (номер не повинен містити букви). Спробуйте ще раз",
                 )
-                bot_value.bot.send_message(message.chat.id, "Введите свой номер телефона.")
+                bot_value.bot.send_message(message.chat.id, "Введіть свій номер телефону.")
                 bot_value.bot.register_next_step_handler(message, register_phone)
     except ValueError:
         bot_value.bot.send_message(
             message.chat.id,
-            "Вы неправильно ввели номер телефона (номер не должен содержать букв).  Попробуйте ещё раз",
+            "Ви неправильно ввели номер телефону (номер не повинен містити букви). Спробуйте ще раз",
         )
         register_phone(message)
 
@@ -113,12 +113,12 @@ def register_email(message):
         if re.fullmatch(regex, message.text):
             user_dict["email"] = message.text
             bot_value.bot.register_next_step_handler(message, final_register)
-            bot_value.bot.send_message(message.chat.id, "Введите краткое описание. (Для выхода введите exit)")
+            bot_value.bot.send_message(message.chat.id, "Введіть короткий опис. (Для виходу напишіть exit)")
         else:
             bot_value.bot.send_message(
-                message.chat.id, "Ошибка, email не соответствует формату, попробуйте заново"
+                message.chat.id, "Помилка, email введено в неправильному форматі, спробуйте заново"
             )
-            bot_value.bot.send_message(message.chat.id, "Введите свой email")
+            bot_value.bot.send_message(message.chat.id, "Введіть свій email")
 
             bot_value.bot.register_next_step_handler(message, register_email)
 
@@ -136,7 +136,7 @@ def final_register(message):
     else:
         bot_value.bot.send_message(
             message.chat.id,
-            "Вы успешно зарегестрировались. С Вами свяжется наш администратор",
+            "Ви зареєструвалися. З Вами зв'яжеться наш адміністратор",
         )
         user_dict["info"] = message.text
         user_dict["data"] = date.today().strftime("%d/%m/%Y")

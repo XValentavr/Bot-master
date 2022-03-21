@@ -17,8 +17,8 @@ def create_buttons_multiple_locality(message, bot, counties) -> None:
         keyboard.add(key)
     bot.send_message(
         message.from_user.id,
-        text="Найдено разные населенные пункты по уездам!"
-        "\nВыберите населенный пункт для большей информации ",
+        text="Знайдено різні населені пункти по повітам!"
+        "\nВиберіть населений пункт для більшої інформації.",
         reply_markup=keyboard,
     )
 

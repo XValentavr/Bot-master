@@ -26,12 +26,13 @@ def visualization(message, bot) -> None:
     :return: None
     """
     village = message.text
+    village = '. ' + village
     global global_village
     global_village = village
     _, count = get_Churches(village.strip(), " ")
     if count == 0:
         bot.send_message(
-            message.chat.id, " Извините, ничего не найдено.\nПроверьте данные"
+            message.chat.id, " Вибачте, нічого не знайдено.\nПеревірте дані"
         )
     if count >= 5:
         global flag
