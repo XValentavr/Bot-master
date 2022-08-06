@@ -9,8 +9,8 @@ def del_if_64(text, counter):
     final_global_counties = [None for _ in range(len(text))]
     for i in text:
         new_county = str(i)
-        if '(Харківське військове поселення)' in new_county:
-            new_county = new_county.replace('(Харківське військове поселення)', '')
+        if "(Харківське військове поселення)" in new_county:
+            new_county = new_county.replace("(Харківське військове поселення)", "")
         while (len(new_county.encode("utf-8"))) > 64:
             new_county = new_county.split()
             new_county.pop()

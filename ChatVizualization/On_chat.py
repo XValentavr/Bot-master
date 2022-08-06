@@ -26,9 +26,11 @@ def visualization(message, bot) -> None:
     :return: None
     """
     village = message.text
-    village = '. ' + village
+    village = ". " + village
     global global_village
-    global_village = village
+    global_village = ".*?\\" + village + "\\b.*?"
+
+    get_current_village(message, global_village)
     _, count = get_Churches(village.strip(), " ")
     if count == 0:
         bot.send_message(
@@ -38,8 +40,7 @@ def visualization(message, bot) -> None:
         global flag
         if len(get_multiple(village)) <= 5:
             flag = False
-            village = ".*?\\" + village + "\\b.*?"
-            SortedBy.sorted_by(bot, message, village)
+            SortedBy.sorted_by(bot, message)
         else:
             flag = True
             village = get_multiple(village)
@@ -60,7 +61,19 @@ def write_if_less(message, bot, village):
         if len(messanges) > 4082:
             for x in range(0, len(messanges) - 14, 4082):
                 bot.send_message(
-                    message.chat.id, messanges[x: x + 4082], parse_mode="Markdown"
+                    message.chat.id, messanges[x : x + 4082], parse_mode="Markdown"
                 )
         else:
             bot.send_message(message.chat.id, messanges, parse_mode="Markdown")
+
+
+def get_current_village(message, village: str = None, lst_village={}):
+    """
+    Function stores current village
+    :param village: entered village
+    :param lst_village: list to store data
+    :return: saved village
+    """
+    if village is not None:
+        lst_village[message.from_user.id] = village
+    return lst_village

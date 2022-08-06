@@ -9,8 +9,6 @@ from MySQLCommand.SelectChurches import get_Churches
 from Command.Create_buttons_churches import create_buttons_churches
 from RegexMethods.delete_if_more_than_64 import del_if_64
 
-global_village = ""
-
 
 def create_buttons_county(message, bot, village: str) -> None:
     """
@@ -32,11 +30,9 @@ def create_buttons_county(message, bot, village: str) -> None:
         "\nВиберіть повіт для більшої інформації",
         reply_markup=keyboard,
     )
-    global global_village
-    global_village = village
 
 
-def callback_worker(call, bot) -> None:
+def callback_worker(call, bot, village) -> None:
     """
     handle touch command
     :param call: message call
@@ -44,8 +40,6 @@ def callback_worker(call, bot) -> None:
     :return: None
     """
     if "повіт" in call.data:
-        village = "".join(map(str, global_village))
+        village = "".join(map(str, village))
         counties, counter = get_Churches(village, call.data)
-        create_buttons_churches(
-            call, bot, del_if_64(counties, counter), village, call.data
-        )
+        create_buttons_churches(call, bot, del_if_64(counties, counter), call.data)
