@@ -61,19 +61,27 @@ def write_if_less(message, bot, village):
         if len(messanges) > 4082:
             for x in range(0, len(messanges) - 14, 4082):
                 bot.send_message(
-                    message.chat.id, messanges[x : x + 4082], parse_mode="Markdown"
+                    message.chat.id, messanges[x: x + 4082], parse_mode="Markdown"
                 )
         else:
             bot.send_message(message.chat.id, messanges, parse_mode="Markdown")
 
 
-def get_current_village(message, village: str = None, lst_village={}):
+def get_current_village(message, village: str = None, lst_village={}, multiple=False, clear=False):
     """
     Function stores current village
+    :param message: chat identifier
     :param village: entered village
     :param lst_village: list to store data
+    :param multiple: flag if command comes from multiple village
     :return: saved village
     """
+
     if village is not None:
         lst_village[message.from_user.id] = village
+    if multiple:
+        lst_village[message.from_user.id] = village
+
+    if clear and message.from_user.id in lst_village.keys():
+        del lst_village[message.from_user.id]
     return lst_village

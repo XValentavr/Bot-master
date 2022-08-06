@@ -10,15 +10,12 @@ from Command.Create_buttons_county import create_buttons_county
 from MySQLCommand.SelectChurches import get_Churches
 from RegexMethods.delete_if_more_than_64 import del_if_64
 
-global_village = ""
-
 
 def sorted_by(bot, message) -> None:
     """
     create sorted buttons
     :param bot: bot token
     :param message: message from user
-    :param village: current village to show
     :return:
     """
     keyboard = types.InlineKeyboardMarkup()
@@ -38,6 +35,7 @@ def callback_worker(message, bot, village):
     sort info by church or county
     :return: None
     """
+    print(village)
     if message.data == "Церковь":
         churches, length = get_Churches(village.strip(), " ")
         create_buttons_churches(

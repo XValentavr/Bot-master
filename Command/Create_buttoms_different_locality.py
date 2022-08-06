@@ -1,4 +1,5 @@
 from telebot import types
+
 from Sorted.SortedBy import sorted_by
 
 
@@ -18,7 +19,7 @@ def create_buttons_multiple_locality(message, bot, counties) -> None:
     bot.send_message(
         message.from_user.id,
         text="Знайдено різні населені пункти по повітам!"
-        "\nВиберіть населений пункт для більшої інформації.",
+             "\nВиберіть населений пункт для більшої інформації.",
         reply_markup=keyboard,
     )
 
@@ -30,7 +31,9 @@ def callback_worker(call, bot) -> None:
     :param bot:bot polling
     :return:
     """
-    from ChatVizualization.On_chat import global_village
+    from ChatVizualization.On_chat import get_current_village
 
-    if "".join(map(str, global_village)).strip() in call.data:
-        sorted_by(bot, call, call.data)
+    village = ''.join(filter(str.isalpha, get_current_village(call).get(call.from_user.id).strip()))
+    if village.replace('b', '') in call.data:
+        get_current_village(message=call, village=call.data, multiple=True)
+        sorted_by(bot, call)
