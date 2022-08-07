@@ -35,7 +35,6 @@ def callback_worker(message, bot, village):
     sort info by church or county
     :return: None
     """
-    print(village)
     if message.data == "Церковь":
         churches, length = get_Churches(village.strip(), " ")
         create_buttons_churches(

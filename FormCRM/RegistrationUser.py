@@ -2,6 +2,7 @@
 This module creates user name
 """
 import re
+
 from FormCRM import salesdrive
 
 user_dict = {"name": None, "phone": None, "email": None, "info": None, "data": None}
@@ -137,11 +138,11 @@ def register_email(message):
             bot_value.bot.register_next_step_handler(message, register_email)
 
 
-def final_register(message):
+def final_register(message) -> dict:
     """
     This module finalize registration
     :param message: information about chat
-    :return: None
+    :return: user information dict
     """
     if message.text == "exit" or message.text == "Exit":
 

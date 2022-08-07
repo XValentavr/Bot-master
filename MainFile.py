@@ -1,6 +1,8 @@
 import logging
 import os
 import os_env
+
+
 import telebot
 from telebot import types
 
@@ -24,6 +26,7 @@ try:
     @bot.message_handler(commands=["info"])
     def show_info(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
         bot.send_message(
             message.chat.id,
             "Ви можете знайти метрики в архівах України, використовуючи цього бота.",
@@ -33,12 +36,15 @@ try:
     @bot.message_handler(commands=["help"])
     def show_help(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
+
         CreateButtons.create_buttons(message, bot)
 
 
     @bot.message_handler(commands=["start"])
     def send_welcome(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
 
         ForStartMenu.some_action(message, bot)
 
@@ -46,6 +52,7 @@ try:
     @bot.message_handler(commands=["reset"])
     def send_welcome(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
 
         ForStartMenu.some_action(message, bot)
 
@@ -53,6 +60,7 @@ try:
     @bot.message_handler(commands=["archive"])
     def show_arcive(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
 
         CreateArchiveButton.show_archive(bot, message)
 
@@ -60,6 +68,7 @@ try:
     @bot.message_handler(commands=["form"])
     def register_form(message):
         get_current_village(message, clear=True)
+        get_current_county(message,clear=True)
 
         init_registration(bot, message)
 

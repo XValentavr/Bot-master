@@ -11,8 +11,7 @@ def reg_first(string: str) -> str:
     :return: str
     """
     st = re.sub(r"\n|\r|\r\n", " ", string)
-    st = re.sub(r"\s{2,}", " ", st)
-    return st
+    return re.sub(r"\s{2,}", " ", st)
 
 
 def reg_third(string: str) -> str:
@@ -21,8 +20,7 @@ def reg_third(string: str) -> str:
     :param string: str
     :return: str
     """
-    st = re.sub(r";\s", "\n", string)
-    return st
+    return re.sub(r";\s", "\n", string)
 
 
 def reg_fourth(string: str) -> str:

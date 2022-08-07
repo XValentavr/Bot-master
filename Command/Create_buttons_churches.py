@@ -29,7 +29,7 @@ def create_buttons_churches(message, bot, cities: list, county) -> None:
     bot.send_message(
         message.from_user.id,
         text="Тут всі церкви по населеному пункту!"
-        "\nВиберіть церкву для більшої інформації ",
+             "\nВиберіть церкву для більшої інформації ",
         reply_markup=keyboard,
     )
     global flag
@@ -37,16 +37,21 @@ def create_buttons_churches(message, bot, cities: list, county) -> None:
     get_current_county(message, county)
 
 
-def get_current_county(message, county: str = None, lst_county={}):
+def get_current_county(message, county: str = None, dct_county={}, clear=False):
     """
-    Function stores current village
-    :param village: entered village
-    :param lst_county: list to store data
+    Function stores current county
+    :param county: entered county
+    :param dct_county: list to store data
+    :param message: chat identifier
+    :param clear: flag if command is clear dict of data
     :return: saved village
     """
     if county is not None:
-        lst_county[message.from_user.id] = county
-    return lst_county
+        dct_county[message.from_user.id] = county
+
+    if clear and message.from_user.id in dct_county.keys():
+        del dct_county[message.from_user.id]
+    return dct_county
 
 
 def callback_worker(call, bot, village, county) -> None:
@@ -54,6 +59,8 @@ def callback_worker(call, bot, village, county) -> None:
     handler touch command
     :param call: callback message
     :param bot: bot
+    :param village: current village to get info
+    :param county: county that village belongs to
     :return:
     """
 
@@ -64,7 +71,7 @@ def callback_worker(call, bot, village, county) -> None:
         if len(reg_1) > 4082:
             for x in range(0, len(reg_1) - 14, 4082):
                 bot.send_message(
-                    call.message.chat.id, reg_1[x : x + 4082], parse_mode="Markdown"
+                    call.message.chat.id, reg_1[x: x + 4082], parse_mode="Markdown"
                 )
                 continue
         else:
