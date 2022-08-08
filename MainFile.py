@@ -104,7 +104,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             not in ["help", "start", "info_first", "archive", "form", "feadback"]
+                             not in ["help", "start", "info_first", "archive", "form", "feedback"]
     )
     def select_churches(message):
         cur_village = village.get(message.from_user.id)
@@ -123,7 +123,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             in ["help", "start", "info_first", "archive", "form", "feadback"]
+                             in ["help", "start", "info_first", "archive", "form", "feedback"]
     )
     def help_handler(message):
         CreateButtons.callback_worker(message, bot)
