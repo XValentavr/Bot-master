@@ -11,6 +11,7 @@ searchFor = ["Пошук інформації"]
 info_first = ["Отримати інформацію про можливості"]
 archive = ["Отримати місцезнаходження архіву та поштовий адрес"]
 form = ["Залишити заяву для дослідження"]
+feedback = ["Залишити відгук чи побажання"]
 
 
 def create_buttons(message, bot) -> None:
@@ -28,11 +29,14 @@ def create_buttons(message, bot) -> None:
     )
     key_archive = types.InlineKeyboardButton(text="/archive", callback_data="archive")
     key_form = types.InlineKeyboardButton(text="/form", callback_data="form")
+    key_feedback = types.InlineKeyboardButton(text="/feedback", callback_data="feedback")
+
     keyboard.add(key_start)
     keyboard.add(key_help)
     keyboard.add(key_info_first)
     keyboard.add(key_archive)
     keyboard.add(key_form)
+    keyboard.add(key_feedback)
     bot.send_message(
         message.from_user.id,
         text="Тут всі команди!" "\nВиберіть команду для отримання інформації",
@@ -57,3 +61,5 @@ def callback_worker(call, bot) -> None:
         bot.send_message(call.message.chat.id, archive)
     elif call.data == "form":
         bot.send_message(call.message.chat.id, form)
+    elif call.data == "feedback":
+        bot.send_message(call.message.chat.id, feedback)

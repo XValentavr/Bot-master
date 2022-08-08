@@ -13,7 +13,7 @@ def connect():
     :return: connection of database
     """
     conn = mysql.connector.connect(
-        host="localhost", database="genealogyboutique", user="valentyn",
-        password="valentyn"
+            host="localhost", database="genealogyboutique", user="root",
+        password="Price11!"
     )
     return conn

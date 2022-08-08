@@ -1,8 +1,6 @@
 import logging
 import os
 import os_env
-
-
 import telebot
 from telebot import types
 
@@ -15,6 +13,7 @@ from Command import (
     CreateArchiveButton,
 )
 from Command import ForStartMenu as ForStartMenu
+from Command.CreateFeadback import init_feedback
 from Command.Create_buttons_churches import get_current_county
 from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
@@ -26,7 +25,7 @@ try:
     @bot.message_handler(commands=["info"])
     def show_info(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
         bot.send_message(
             message.chat.id,
             "Ви можете знайти метрики в архівах України, використовуючи цього бота.",
@@ -36,7 +35,7 @@ try:
     @bot.message_handler(commands=["help"])
     def show_help(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
 
         CreateButtons.create_buttons(message, bot)
 
@@ -44,23 +43,30 @@ try:
     @bot.message_handler(commands=["start"])
     def send_welcome(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
 
         ForStartMenu.some_action(message, bot)
 
 
-    @bot.message_handler(commands=["reset"])
+    @bot.message_handler(commands=["restart"])
     def send_welcome(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
 
         ForStartMenu.some_action(message, bot)
+
+
+    @bot.message_handler(commands=['feedback'])
+    def create_feedback(message):
+        get_current_village(message, clear=True)
+        get_current_county(message, clear=True)
+        init_feedback(bot, message)
 
 
     @bot.message_handler(commands=["archive"])
-    def show_arcive(message):
+    def show_archive(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
 
         CreateArchiveButton.show_archive(bot, message)
 
@@ -68,7 +74,7 @@ try:
     @bot.message_handler(commands=["form"])
     def register_form(message):
         get_current_village(message, clear=True)
-        get_current_county(message,clear=True)
+        get_current_county(message, clear=True)
 
         init_registration(bot, message)
 
@@ -98,7 +104,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             not in ["help", "start", "info_first", "archive", "form"]
+                             not in ["help", "start", "info_first", "archive", "form", "feadback"]
     )
     def select_churches(message):
         cur_village = village.get(message.from_user.id)
@@ -117,7 +123,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             in ["help", "start", "info_first", "archive", "form"]
+                             in ["help", "start", "info_first", "archive", "form", "feadback"]
     )
     def help_handler(message):
         CreateButtons.callback_worker(message, bot)
