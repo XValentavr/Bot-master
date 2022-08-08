@@ -20,7 +20,6 @@ def create_buttons_county(message, bot, village: str) -> None:
     """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     village = "".join(map(str, village))
-    print('vfdbvfd',village)
     counties = get_county(village, " ")
     for i in counties:
         key = types.InlineKeyboardButton(text=i, callback_data=i)
