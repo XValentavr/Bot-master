@@ -2,6 +2,8 @@ from telebot import types
 
 from Sorted.SortedBy import sorted_by
 
+mainvillage = None
+
 
 def create_buttons_multiple_locality(message, bot, counties) -> None:
     """
@@ -34,6 +36,13 @@ def callback_worker(call, bot) -> None:
     from ChatVizualization.On_chat import get_current_village
 
     village = ''.join(filter(str.isalpha, get_current_village(call).get(call.from_user.id).strip()))
-    if village.replace('b', '') in call.data:
-        get_current_village(message=call, village=call.data, multiple=True)
-        sorted_by(bot, call)
+    global mainvillage
+    if mainvillage is None:
+        mainvillage = village
+        if village.replace('b', '') in call.data:
+            get_current_village(message=call, village=call.data, multiple=True)
+            sorted_by(bot, call)
+    elif mainvillage is not None:
+        if mainvillage.replace('b', '') in call.data:
+            get_current_village(message=call, village=call.data, multiple=True)
+            sorted_by(bot, call)
