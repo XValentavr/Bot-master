@@ -26,8 +26,8 @@ def create_buttons_county(message, bot, village: str) -> None:
         keyboard.add(key)
     bot.send_message(
         message.from_user.id,
-        text="Тут всі повіти по населеному пункту!"
-        "\nВиберіть повіт для більшої інформації",
+        text="Знайшов населений пункт в таких повітах.\n"
+             "Виберіть повіт, щоб отримати більше даних",
         reply_markup=keyboard,
     )
 

@@ -28,17 +28,19 @@ try:
         get_current_county(message, clear=True)
         bot.send_message(
             message.chat.id,
-            "Ви можете знайти метрики в архівах України, використовуючи цього бота.",
+            "Ви можете знайти метрики в архівах України, використовуючи цього бота.\n"
+            "1) Команда /search дозволяє Вам знайти інформації\n"
+            "2) Команда /reset дозволяє Вам повернутися в початкове меню\n"
+            "3) Команда /bid дозволяє Вам залишити заявку для дослідження або зв'язатися з нами",
         )
 
 
-    @bot.message_handler(commands=["help"])
-    def show_help(message):
-        get_current_village(message, clear=True)
-        get_current_county(message, clear=True)
+    # @bot.message_handler(commands=["help"])
+    # def show_help(message):
+    #   get_current_village(message, clear=True)
+    #  get_current_county(message, clear=True)
 
-        CreateButtons.create_buttons(message, bot)
-
+    # CreateButtons.create_buttons(message, bot)
 
     @bot.message_handler(commands=["start"])
     def send_welcome(message):
@@ -48,7 +50,7 @@ try:
         ForStartMenu.some_action(message, bot)
 
 
-    @bot.message_handler(commands=["restart"])
+    @bot.message_handler(commands=["reset"])
     def send_welcome(message):
         get_current_village(message, clear=True)
         get_current_county(message, clear=True)
@@ -56,22 +58,20 @@ try:
         ForStartMenu.some_action(message, bot)
 
 
-    @bot.message_handler(commands=['feedback'])
-    def create_feedback(message):
-        get_current_village(message, clear=True)
-        get_current_county(message, clear=True)
-        init_feedback(bot, message)
+    # @bot.message_handler(commands=['feedback'])
+    # def create_feedback(message):
+    # get_current_village(message, clear=True)
+    # get_current_county(message, clear=True)
+    # init_feedback(bot, message)
 
+    # @bot.message_handler(commands=["archive"])
+    # def show_archive(message):
+    # get_current_village(message, clear=True)
+    # get_current_county(message, clear=True)
 
-    @bot.message_handler(commands=["archive"])
-    def show_archive(message):
-        get_current_village(message, clear=True)
-        get_current_county(message, clear=True)
+    # CreateArchiveButton.show_archive(bot, message)
 
-        CreateArchiveButton.show_archive(bot, message)
-
-
-    @bot.message_handler(commands=["form"])
+    @bot.message_handler(commands=["bid"])
     def register_form(message):
         get_current_village(message, clear=True)
         get_current_county(message, clear=True)
@@ -104,7 +104,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             not in ["help", "start", "info_first", "archive", "form", "feedback"]
+                             not in ["start", "bid"]
     )
     def select_churches(message):
         cur_village = village.get(message.from_user.id)
@@ -123,7 +123,7 @@ try:
 
     @bot.callback_query_handler(
         func=lambda message: message.data
-                             in ["help", "start", "info_first", "archive", "form", "feedback"]
+                             in ["start", "bid"]
     )
     def help_handler(message):
         CreateButtons.callback_worker(message, bot)

@@ -37,6 +37,7 @@ def generate_message(res: str) -> str:
             + format_death(res[10])
             + format_testament(res[11])
             + format_additional(res[12])
+            + '\nПовернутися назад - /reset'
     )
 
 

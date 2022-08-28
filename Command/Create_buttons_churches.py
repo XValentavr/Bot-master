@@ -28,8 +28,8 @@ def create_buttons_churches(message, bot, cities: list, county) -> None:
         keyboard.add(key)
     bot.send_message(
         message.from_user.id,
-        text="Тут всі церкви по населеному пункту!"
-             "\nВиберіть церкву для більшої інформації ",
+        text="Знайшов метричні книги таких церков населеного пункту.\n"
+             "Виберіть церкву, щоб отримати більше даних",
         reply_markup=keyboard,
     )
     global flag
