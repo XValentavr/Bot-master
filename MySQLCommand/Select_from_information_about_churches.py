@@ -9,7 +9,7 @@ from MySQLCommand.CreateConnection import connect
 
 
 def select_operation_get_churches(
-    current_church: str, current_village: str, current_region: str
+        current_church: str, current_village: str, current_region: str
 ) -> list:
     """
     get info from database when church mod is selected
@@ -22,7 +22,7 @@ def select_operation_get_churches(
     if not new_village.startswith(".*?"):
         new_village = re.escape(new_village)
     connection = connect()
-    query = "select archive.Name, province,eparchy,village,county,religion,church,birth,wedding,divorce, death,testament,additional from catalog_of_metrics left join archive archive on archive.num = catalog_of_metrics.archive where church regexp  (%s)and village regexp(%s)  and county regexp(%s)"
+    query = "select archive.Name, province,village,county,church,birth,wedding,divorce, death,testament,additional from catalog_of_metrics left join archive archive on archive.num = catalog_of_metrics.archive where church regexp  (%s)and village regexp(%s)  and county regexp(%s)"
     cursor = connection.cursor()
     cursor.execute(
         query,

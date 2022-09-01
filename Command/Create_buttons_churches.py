@@ -71,9 +71,9 @@ def callback_worker(call, bot, village, county) -> None:
         if len(reg_1) > 4082:
             for x in range(0, len(reg_1) - 14, 4082):
                 bot.send_message(
-                    call.message.chat.id, reg_1[x: x + 4082], parse_mode="Markdown"
+                    call.message.chat.id, f'`{reg_1[x: x + 4082]}`', parse_mode="Markdown"
                 )
                 continue
         else:
-            bot.send_message(call.message.chat.id, reg_1, parse_mode="Markdown")
+            bot.send_message(call.message.chat.id, f'`{reg_1}`', parse_mode="Markdown")
             continue

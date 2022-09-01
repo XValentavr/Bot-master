@@ -14,6 +14,6 @@ def connect():
     """
     conn = mysql.connector.connect(
             host="localhost", database="genealogyboutique", user="root",
-        password="Price11!"
+        password="root"
     )
     return conn

@@ -4,6 +4,8 @@ Change data isung re module
 # project imports
 import re
 
+from MessageChanger.change import changer
+
 
 def generate_message(res: str) -> str:
     """
@@ -17,28 +19,21 @@ def generate_message(res: str) -> str:
         if i is None:
             res[count] = " "
         count += 1
-    return (
-            res[0]
-            + "\n"
-            + res[1]
-            + "\n"
-            + res[2]
-            + res[3]
-            + "\n"
-            + res[4]
-            + "\n"
-            + res[5]
-            + "\n"
-            + res[6]
-            + "\n"
-            + format_birth(res[7])
-            + format_wedding(res[8])
-            + format_divorce(res[9])
-            + format_death(res[10])
-            + format_testament(res[11])
-            + format_additional(res[12])
-            + '\nПовернутися назад - /reset'
-    )
+    info_dct = {
+        'archive': res[0].strip(),
+        'province': res[1].strip(),
+        'village': res[2].replace(';', '').strip(),
+        'county': res[3].strip(),
+        'church': res[4].strip(),
+        'birth': format_birth(res[5]),
+        'wedding': format_wedding(res[6]),
+        'divorce': format_divorce(res[7]),
+        'death': format_death(res[8]),
+        'testament': format_testament(res[9]),
+        'additional': format_additional(res[10])
+    }
+
+    return changer(info_dct)
 
 
 def remove_new_lines(res: str) -> list:

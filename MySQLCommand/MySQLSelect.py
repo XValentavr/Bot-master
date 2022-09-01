@@ -17,7 +17,7 @@ def SelectOperation(name: str) -> list:
     name = "".join(map(str, name.rstrip()))
     name = re.escape(name)
     connection = connect()
-    query = """select archive.Name, province,eparchy,county,religion,village,church, birth, wedding, divorce, death, testament, additional from catalog_of_metrics  join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s)"""
+    query = """select archive.Name, province,village,county,church, birth, wedding, divorce, death, testament, additional from catalog_of_metrics  join archive archive on archive.num = catalog_of_metrics.archive where village regexp(%s)"""
     cursor = connection.cursor()
     cursor.execute(query, (name,))
     result = cursor.fetchall()
