@@ -29,7 +29,9 @@ def create_buttons(message, bot) -> None:
     )
     key_archive = types.InlineKeyboardButton(text="/archive", callback_data="archive")
     key_form = types.InlineKeyboardButton(text="/form", callback_data="form")
-    key_feedback = types.InlineKeyboardButton(text="/feedback", callback_data="feedback")
+    key_feedback = types.InlineKeyboardButton(
+        text="/feedback", callback_data="feedback"
+    )
 
     keyboard.add(key_start)
     keyboard.add(key_help)

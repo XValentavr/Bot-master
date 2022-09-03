@@ -16,10 +16,11 @@ from Command.Create_buttons_churches import get_current_county
 from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
 
-bot = telebot.TeleBot(os.getenv('TOKEN'))
+bot = telebot.TeleBot(os.getenv("TOKEN"))
 logging.basicConfig(filename="sample.log", level=logging.ERROR)
 village = county = {}
 try:
+
     @bot.message_handler(commands=["info"])
     def show_info(message):
         get_current_village(message, clear=True)
@@ -31,7 +32,6 @@ try:
             "2) Команда /reset дозволяє Вам повернутися в початкове меню\n"
             "3) Команда /bid дозволяє Вам залишити заявку для дослідження або зв'язатися з нами",
         )
-
 
     # @bot.message_handler(commands=["help"])
     # def show_help(message):
@@ -47,14 +47,12 @@ try:
 
         ForStartMenu.some_action(message, bot)
 
-
     @bot.message_handler(commands=["reset"])
     def send_welcome(message):
         get_current_village(message, clear=True)
         get_current_county(message, clear=True)
 
         ForStartMenu.some_action(message, bot)
-
 
     # @bot.message_handler(commands=['feedback'])
     # def create_feedback(message):
@@ -76,7 +74,6 @@ try:
 
         init_registration(bot, message)
 
-
     @bot.message_handler(commands=["search"])
     def sql_operation(message):
         markup = types.ReplyKeyboardRemove(selective=False)
@@ -85,13 +82,11 @@ try:
         )
         bot.register_next_step_handler(msg, process_village)
 
-
     def process_village(message):
         visualization(message, bot)
         global village, county
         village = get_current_village(message)
         county = get_current_county(message)
-
 
     @bot.message_handler(commands=["order"])
     def process_city_step(message):
@@ -99,10 +94,8 @@ try:
 
         to_order(message, bot)
 
-
     @bot.callback_query_handler(
-        func=lambda message: message.data
-                             not in ["start", "bid"]
+        func=lambda message: message.data not in ["start", "bid"]
     )
     def select_churches(message):
         cur_village = village.get(message.from_user.id)
@@ -112,17 +105,15 @@ try:
         Create_buttons_county.callback_worker(message, bot, cur_village)
 
         if cur_county is not None:
-            Create_buttons_churches.callback_worker(message, bot, cur_village, cur_county)
+            Create_buttons_churches.callback_worker(
+                message, bot, cur_village, cur_county
+            )
         from ChatVizualization.On_chat import flag
 
         if flag:
             Create_buttoms_different_locality.callback_worker(message, bot)
 
-
-    @bot.callback_query_handler(
-        func=lambda message: message.data
-                             in ["start", "bid"]
-    )
+    @bot.callback_query_handler(func=lambda message: message.data in ["start", "bid"])
     def help_handler(message):
         CreateButtons.callback_worker(message, bot)
 

@@ -27,9 +27,6 @@ def register_feadback(message):
         ForStartMenu.some_action(message, bot_value.bot)
 
     else:
-        bot_value.bot.send_message(
-            message.chat.id, "Дякуємо за коментар!")
+        bot_value.bot.send_message(message.chat.id, "Дякуємо за коментар!")
 
-        bot_value.bot.send_message(
-            469236353,
-            feadback)
+        bot_value.bot.send_message(469236353, feadback)

@@ -9,7 +9,7 @@ from MySQLCommand.CreateConnection import connect
 
 
 def select_operation_get_churches(
-        current_church: str, current_village: str, current_region: str
+    current_church: str, current_village: str, current_region: str
 ) -> list:
     """
     get info from database when church mod is selected

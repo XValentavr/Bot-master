@@ -29,7 +29,7 @@ def create_buttons_churches(message, bot, cities: list, county) -> None:
     bot.send_message(
         message.from_user.id,
         text="Знайшов метричні книги таких церков населеного пункту.\n"
-             "Виберіть церкву, щоб отримати більше даних",
+        "Виберіть церкву, щоб отримати більше даних",
         reply_markup=keyboard,
     )
     global flag
@@ -71,9 +71,11 @@ def callback_worker(call, bot, village, county) -> None:
         if len(reg_1) > 4082:
             for x in range(0, len(reg_1) - 14, 4082):
                 bot.send_message(
-                    call.message.chat.id, f'`{reg_1[x: x + 4082]}`', parse_mode="Markdown"
+                    call.message.chat.id,
+                    f"`{reg_1[x: x + 4082]}`",
+                    parse_mode="Markdown",
                 )
                 continue
         else:
-            bot.send_message(call.message.chat.id, f'`{reg_1}`', parse_mode="Markdown")
+            bot.send_message(call.message.chat.id, f"`{reg_1}`", parse_mode="Markdown")
             continue

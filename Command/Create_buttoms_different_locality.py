@@ -21,7 +21,7 @@ def create_buttons_multiple_locality(message, bot, counties) -> None:
     bot.send_message(
         message.from_user.id,
         text="Знайдено різні населені пункти по повітам!"
-             "\nВиберіть населений пункт для більшої інформації.",
+        "\nВиберіть населений пункт для більшої інформації.",
         reply_markup=keyboard,
     )
 
@@ -35,14 +35,16 @@ def callback_worker(call, bot) -> None:
     """
     from ChatVizualization.On_chat import get_current_village
 
-    village = ''.join(filter(str.isalpha, get_current_village(call).get(call.from_user.id).strip()))
+    village = "".join(
+        filter(str.isalpha, get_current_village(call).get(call.from_user.id).strip())
+    )
     global mainvillage
     if mainvillage is None:
         mainvillage = village
-        if village.replace('b', '') in call.data:
+        if village.replace("b", "") in call.data:
             get_current_village(message=call, village=call.data, multiple=True)
             sorted_by(bot, call)
     elif mainvillage is not None:
-        if mainvillage.replace('b', '') in call.data:
+        if mainvillage.replace("b", "") in call.data:
             get_current_village(message=call, village=call.data, multiple=True)
             sorted_by(bot, call)

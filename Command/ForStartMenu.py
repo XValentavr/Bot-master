@@ -13,6 +13,6 @@ def some_action(message, bot):
     bot.send_message(
         message.from_user.id,
         text="Вітаю! Я генеалогічний бот. Допомагаю дізнатися, які метричні книги є архівах України."
-             " Оберіть команду, щоб я почав працювати.",
-        reply_markup=keyboard
+        " Оберіть команду, щоб я почав працювати.",
+        reply_markup=keyboard,
     )

@@ -61,13 +61,17 @@ def write_if_less(message, bot, village):
         if len(messanges) > 4082:
             for x in range(0, len(messanges) - 14, 4082):
                 bot.send_message(
-                    message.chat.id, f'`{messanges[x: x + 4082]}`', parse_mode="Markdown"
+                    message.chat.id,
+                    f"`{messanges[x: x + 4082]}`",
+                    parse_mode="Markdown",
                 )
         else:
-            bot.send_message(message.chat.id, f'`{messanges}`', parse_mode="Markdown")
+            bot.send_message(message.chat.id, f"`{messanges}`", parse_mode="Markdown")
 
 
-def get_current_village(message, village: str = None, lst_village={}, multiple=False, clear=False):
+def get_current_village(
+    message, village: str = None, lst_village={}, multiple=False, clear=False
+):
     """
     Function stores current village
     :param message: chat identifier

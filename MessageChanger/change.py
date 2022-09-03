@@ -1,60 +1,92 @@
-import re
-from math import floor
+from MessageChanger.kyiv_archive import kyiv
+from MessageChanger.not_kyiv_archive import not_kyiv
 
 
 def changer(message: dict) -> str:
-    return table_blueprint(message.get('archive'), message.get('village'), message.get('county'),
-                           message.get('province'), message.get('church'), message.get('birth'))
+    return table_blueprint(
+        message.get("archive"),
+        message.get("village"),
+        message.get("county"),
+        message.get("province"),
+        message.get("church"),
+        message.get("birth"),
+        message.get("death"),
+        message.get("wedding"),
+        message.get("additional"),
+        message.get("testament"),
+    )
 
 
-def table_blueprint(archive, village, county, province, church, birth) -> str:
-    '''
+def table_blueprint(
+        archive,
+        village,
+        county,
+        province,
+        church,
+        birth,
+        death,
+        wedding,
+        additional,
+        testament,
+) -> str:
+    """
     This module creates table blueprint
     :return: blueprint of table
-    '''
-    max_length = lambda string: len(string)
-    p_lambda = lambda prvnc: prvnc.split(',')[0].strip()
+    """
+    p_lambda = lambda prvnc: prvnc.split(",")[0].strip()
 
-    maxer = max_length(f'Назва повіту і губернії - {county.strip()}, {p_lambda(province.strip())}')
-    dots = ''.join([' ' for _ in range(maxer)])
-    last_td = td = ''.join([' ' for _ in range(round(maxer / 4) - 2)])
-    if ((maxer / 4) - 2) - len(td) == 0.5 or ((maxer / 4) - 2) - len(td) == 0.25:
-        last_td = td + ' '
-    elif ((maxer / 4) - 2) == len(td):
-        last_td = last_td[:len(last_td) - 1]
+    last_td = td = "".join([" " for _ in range(2)])
 
-    metrics_changer(birth, archive)
-    table = f"|{check_and_add(f'Назва архіву - {archive.strip()}', maxer)}\n" \
-            f"|{check_and_add(f'Назва села - {village.strip()}', maxer)}\n" \
-            f"|{check_and_add(f'Назва повіту і губернії - {county.strip()}, {p_lambda(province.strip())}', maxer)}\n" \
-            f"|{check_and_add(f'Назва церкви - {church.strip()}', maxer)}\n" \
-            f"|{dots}|\n" \
-            f"|{check_and_add(metric_title(birth) if metric_title(birth) else None, maxer)}\n" \
-            f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|"
+    table = (
+        f"{f'{archive.strip()}'}\n"
+        f"{f'{village.strip()}'}\n"
+        f"{f'{county.strip()}, {p_lambda(province.strip())}'}\n"
+        f"{f'{church.strip()}'}\n"
+        f"\n"
+        f"{metric_title(birth.upper()) if metric_title(birth) else None}\n\n"
+        f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+    )
+    year, fund, description, case = metrics_changer(birth, archive)
+
+    table = generator_of_message(
+        table,
+        year,
+        fund,
+        description,
+        case,
+    )
+
+    # for death metrics
+    table += f"\n\n{metric_title(death.upper()) if metric_title(death) else None}\n\n"
+    table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n"
+    year, fund, description, case = metrics_changer(death, archive)
+    table = generator_of_message(table, year, fund, description, case)
+
+    # for wedding metrics
+    table += (
+        f"\n\n{metric_title(wedding.upper()) if metric_title(wedding) else None}\n\n"
+    )
+    table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+    year, fund, description, case = metrics_changer(wedding, archive)
+    table = generator_of_message(table, year, fund, description, case)
+
+    # for additional metrics
+    if additional.strip() != "" or testament.strip() != "":
+        table += f"\n\nСПОВІДНІ ВІДОМОСТІ\n"
+        table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+        year, fund, description, case = metrics_changer(additional, archive)
+        table = generator_of_message(table, year, fund, description, case)
+
+        year, fund, description, case = metrics_changer(testament, archive)
+        table = generator_of_message(
+            table,
+            year,
+            fund,
+            description,
+            case,
+        )
+
     return table
-
-
-def check_and_add(string, max_string):
-    """
-    This function create special string to create table
-    :param string: string to upgrade
-    :param max_string: length of string to add symbols
-    :return: new updated string
-    """
-    # if string is empty then return
-    if string is None:
-        return None
-
-    # else add data
-    difference = floor((max_string - len(string)) / 2)
-    if difference % 2 != 0 or (difference % 2 == 0 and difference < (max_string - len(string)) / 2):
-        difference += 1
-    for _ in range(difference):
-        string = ' ' + string
-        string += ' '
-    if len(string) > max_string:
-        string = string[:len(string) - (len(string) - max_string)]
-    return string + '|'
 
 
 def metric_title(metric: str) -> str | None:
@@ -64,11 +96,11 @@ def metric_title(metric: str) -> str | None:
     :return: title
     """
     if metric is not None:
-        return metric.split('\n')[0].replace('*', '')
+        return metric.split("\n")[0].replace("*", "")
     return None
 
 
-def metrics_changer(metric: str, archive: str) -> str | None:
+def metrics_changer(metric: str, archive: str) -> [list, list, list, list]:
     """
     This module change metric string to table
     :param metric: string to change
@@ -76,27 +108,61 @@ def metrics_changer(metric: str, archive: str) -> str | None:
     """
     if metric is None:
         return None
-    if 'історичний архів в м. Київ' not in archive:
-        data = metric.split('\n')
-        del data[0]
-        for i, d in enumerate(data):
-            if data[i] == '' or data[i] == ' ':
-                del data[i]
-        not_kyiv(data)
+    data = metric.split("\n")
+    del data[0]
+    for i, d in enumerate(data):
+        if data[i] == "" or data[i] == " ":
+            del data[i]
+    if "історичний архів в м. Київ" not in archive:
+        return not_kyiv(data)
     else:
-        pass
+        return kyiv(data)
 
 
-def not_kyiv(datalist: list) -> str:
+def generator_of_message(
+        table: str,
+        year: list,
+        fund: list,
+        description: list,
+        case: list,
+) -> str:
     """
-    This function works with metrics not in Kyiv archive
-    :param datalist: list of metrics
-    :return: table string
+    This function generate full message
+    :param table: string to add new info
+    :param year: list of years
+    :param fund: list of funds
+    :param description: list of descriptions
+    :param case: list of cases
+    :return: final message
     """
-    year = []
-    fund = []
-    description = []
-    case = []
-    for data in datalist:
-        if data != '':
-            pass
+    td = "".join([" " for _ in range(2)])
+    for data in range(len(year)):
+        fund_1 = count_tabs(fund[data], "fund")
+        description_1 = count_tabs(description[data], "description")
+        case_1 = count_tabs(case[data], "case")
+        table += f"{fund_1}{td}{description_1}{td}{case_1}{td}{year[data]}\n"
+    return table
+
+
+def count_tabs(data, where):
+    if where == "fund":
+        if data is not None:
+            while len(data) <= len("Фонд") - 1:
+                data += " "
+            data = "|" + data + "|"
+            return data
+        return None
+    if where == "description":
+        if data is not None:
+            while len(data) <= len("Опис") - 1:
+                data += " "
+            data = "|" + data + "|"
+            return data
+        return None
+    if where == "case":
+        if data is not None:
+            while len(data) <= len("Справа") - 1:
+                data += " "
+            data = "|" + data + "|"
+            return data
+        return None
