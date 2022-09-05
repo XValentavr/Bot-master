@@ -7,7 +7,6 @@ def not_kyiv(datalist: list) -> [list, list, list, list]:
     :param datalist: list of metrics
     :return: table string
     """
-    print(datalist)
     year = [re_to_get_data(data.lower(), "year") for data in datalist if data != ""]
     fund = [re_to_get_data(data.lower(), "fund") for data in datalist if data != ""]
     description = [

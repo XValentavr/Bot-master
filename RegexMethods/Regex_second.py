@@ -75,13 +75,13 @@ def format_birth(birth: str) -> str:
     if birth is not None:
         birth = replace_semicolon_to_newline(birth)
         return (
-            re.sub(
-                r"^\s?Метричні книги про народження;\s?(.*)$",
-                r"*Метричні книги про народження*",
-                birth,
-                flags=re.DOTALL,
-            )
-            + "\n"
+                re.sub(
+                    r"^\s?Метричні книги про народження;\s?(.*)$",
+                    r"*Метричні книги про народження*",
+                    birth,
+                    flags=re.DOTALL,
+                )
+                + "\n"
         )
 
 
@@ -96,13 +96,13 @@ def format_wedding(wedding: str) -> str:
     if wedding is not None:
         wedding = replace_semicolon_to_newline(wedding)
         return (
-            re.sub(
-                r"^\s?Метричні книги про шлюб;:\s?(.*)$",
-                r"*Метричні книги про шлюб*",
-                wedding,
-                flags=re.DOTALL,
-            )
-            + "\n"
+                re.sub(
+                    r"^\s?Метричні книги про шлюб;:\s?(.*)$",
+                    r"*Метричні книги про шлюб*",
+                    wedding,
+                    flags=re.DOTALL,
+                )
+                + "\n"
         )
 
 
@@ -128,13 +128,13 @@ def format_death(death: str) -> str:
     if death is not None:
         death = replace_semicolon_to_newline(death)
         return (
-            re.sub(
-                r"^\s?Метричні книги про смерть;:\s?(.*)$",
-                r"*Метричні книги про смерть*",
-                death,
-                flags=re.DOTALL,
-            )
-            + "\n"
+                re.sub(
+                    r"^\s?Метричні книги про смерть;:\s?(.*)$",
+                    r"*Метричні книги про смерть*",
+                    death,
+                    flags=re.DOTALL,
+                )
+                + "\n"
         )
 
 
@@ -147,13 +147,13 @@ def format_testament(testament: str) -> str:
     if testament is not None:
         testament = replace_semicolon_to_newline(testament)
         return (
-            re.sub(
-                r"^\s?сповідні відомості:\s?(.*)$",
-                r"*сповідні відомості:*`",
-                testament,
-                flags=re.DOTALL,
-            )
-            + "\n"
+                re.sub(
+                    r"^\s?сповідні відомості:\s?(.*)$",
+                    r"*сповідні відомості:*`",
+                    testament,
+                    flags=re.DOTALL,
+                )
+                + "\n"
         )
 
 

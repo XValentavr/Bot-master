@@ -1,5 +1,6 @@
 from MessageChanger.kyiv_archive import kyiv
 from MessageChanger.not_kyiv_archive import not_kyiv
+import shlex
 
 
 def changer(message: dict) -> str:
@@ -36,15 +37,14 @@ def table_blueprint(
     p_lambda = lambda prvnc: prvnc.split(",")[0].strip()
 
     last_td = td = "".join([" " for _ in range(2)])
-
     table = (
-        f"{f'{archive.strip()}'}\n"
+        f"{f'*{archive.strip().upper()}'}*\n"
         f"{f'{village.strip()}'}\n"
         f"{f'{county.strip()}, {p_lambda(province.strip())}'}\n"
         f"{f'{church.strip()}'}\n"
         f"\n"
-        f"{metric_title(birth.upper()) if metric_title(birth) else None}\n\n"
-        f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+        f"*{metric_title(birth.upper()) if metric_title(birth) else None}*\n\n"
+        f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
     )
     year, fund, description, case = metrics_changer(birth, archive)
 
@@ -57,23 +57,23 @@ def table_blueprint(
     )
 
     # for death metrics
-    table += f"\n\n{metric_title(death.upper()) if metric_title(death) else None}\n\n"
-    table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n"
+    table += f"\n\n*{metric_title(death.upper()) if metric_title(death) else None}*\n\n"
+    table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
     year, fund, description, case = metrics_changer(death, archive)
     table = generator_of_message(table, year, fund, description, case)
 
     # for wedding metrics
     table += (
-        f"\n\n{metric_title(wedding.upper()) if metric_title(wedding) else None}\n\n"
+        f"\n\n*{metric_title(wedding.upper()) if metric_title(wedding) else None}*\n\n"
     )
-    table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+    table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
     year, fund, description, case = metrics_changer(wedding, archive)
     table = generator_of_message(table, year, fund, description, case)
 
     # for additional metrics
     if additional.strip() != "" or testament.strip() != "":
-        table += f"\n\nСПОВІДНІ ВІДОМОСТІ\n"
-        table += f"|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|\n\n"
+        table += f"\n\n*СПОВІДНІ ВІДОМОСТІ*\n\n"
+        table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
         year, fund, description, case = metrics_changer(additional, archive)
         table = generator_of_message(table, year, fund, description, case)
 
@@ -140,7 +140,7 @@ def generator_of_message(
         fund_1 = count_tabs(fund[data], "fund")
         description_1 = count_tabs(description[data], "description")
         case_1 = count_tabs(case[data], "case")
-        table += f"{fund_1}{td}{description_1}{td}{case_1}{td}{year[data]}\n"
+        table += f"`{fund_1}{td}{description_1}{td}{case_1}{td}{year[data]}`\n"
     return table
 
 
