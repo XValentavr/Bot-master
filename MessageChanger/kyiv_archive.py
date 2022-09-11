@@ -33,7 +33,7 @@ def kyiv_reg_to_get_data(data: str, where: str):
     if where == 'year':
         year = re.search(r"(?<=\().*?(?=$)", data, flags=re.DOTALL)
         if year is not None:
-            return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
+                return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
         else:
             return None
     if where == 'case':

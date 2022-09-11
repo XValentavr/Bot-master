@@ -4,7 +4,7 @@ This module creates buttons if church mod was selected
 
 # local imports
 from telebot import types
-
+from difflib import SequenceMatcher
 import message_creator.messager
 from MySQLCommand.Select_from_information_about_churches import (
     select_operation_get_churches,
@@ -14,17 +14,24 @@ from RegexMethods.Regex_second import generate_message
 flag = True
 
 
-def create_buttons_churches(message, bot, cities: list, county) -> None:
+def create_buttons_churches(message, bot, churches: list, county) -> None:
     """
     creates buttons
     :param message: message
     :param bot: telebot
-    :param cities: list
+    :param churches: list
     :param county: current county
     :return: None
     """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
-    for i in cities:
+    for i, _ in enumerate(churches):
+        try:
+            print(churches[i])
+            s = SequenceMatcher(None, churches[i].replace('церква', ''), churches[i + 1].replace('церква', ''))
+            print(s.ratio())
+        except IndexError:
+            break
+    for i in churches:
         key = types.InlineKeyboardButton(text=i, callback_data=i)
         keyboard.add(key)
     bot.send_message(
