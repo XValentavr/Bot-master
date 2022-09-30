@@ -43,37 +43,40 @@ def table_blueprint(
         f"{f'{church.strip()}'}\n"
     )
     if "NULL" not in birth:
-        table += (f"\n"
-        f"*{metric_title(birth.upper()) if metric_title(birth) else ''}*\n\n"
-        f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n")
-        year, fund, description, case = metrics_changer(birth, archive)
+        if birth.strip() != '*Метричні книги про народження*':
+            table += (f"\n"
+                      f"*{metric_title(birth.upper()) if metric_title(birth) else ''}*\n\n"
+                      f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n")
+            year, fund, description, case = metrics_changer(birth, archive)
 
-        table = generator_of_message(
-            table,
-            year,
-            fund,
-            description,
-            case,
-        )
+            table = generator_of_message(
+                table,
+                year,
+                fund,
+                description,
+                case,
+            )
     if 'NULL' not in death:
-        # for death metrics
-        title = metric_title(death)
-        if title:
-            table += f"\n\n*{title.upper()}*\n\n"
-            table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
-            year, fund, description, case = metrics_changer(death, archive)
-            table = generator_of_message(table, year, fund, description, case)
+        if death.strip() != '*Метричні книги про смерть*':
+            # for death metrics
+            title = metric_title(death)
+            if title:
+                table += f"\n\n*{title.upper()}*\n\n"
+                table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
+                year, fund, description, case = metrics_changer(death, archive)
+                table = generator_of_message(table, year, fund, description, case)
 
     # for wedding metrics
     if "NULL" not in wedding:
-        title = metric_title(wedding)
-        if title:
-            table += (
-                f"\n\n*{title.upper()}*\n\n"
-            )
-            table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
-            year, fund, description, case = metrics_changer(wedding, archive)
-            table = generator_of_message(table, year, fund, description, case)
+        if wedding.strip() != '*Метричні книги про шлюб*':
+            title = metric_title(wedding)
+            if title:
+                table += (
+                    f"\n\n*{title.upper()}*\n\n"
+                )
+                table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
+                year, fund, description, case = metrics_changer(wedding, archive)
+                table = generator_of_message(table, year, fund, description, case)
 
     # for additional metrics
     if additional.strip() != "" or testament.strip() != "":

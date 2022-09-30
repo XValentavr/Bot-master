@@ -1,5 +1,7 @@
 import re
 
+from MessageChanger.check_and_change import checker_date, checker_case
+
 
 def not_kyiv(datalist: list):
     """
@@ -13,7 +15,8 @@ def not_kyiv(datalist: list):
         re_to_get_data(data.lower(), "description") for data in datalist if data != ""
     ]
     case = [re_to_get_data(data.lower(), "case") for data in datalist if data != ""]
-
+    year, fund, description, case = checker_date(year=year, fund=fund, description=description, case=case)
+    year, fund, description, case = checker_case(year=year, fund=fund, description=description, case=case)
     return year, fund, description, case
 
 
@@ -27,19 +30,19 @@ def re_to_get_data(data: str, where: str):
     if where == "case":
         case = re.search(r"(?<=спр.).*?(?=$)", data, flags=re.DOTALL)
         if case is not None:
-            return del_special_character(case,'case')
+            return del_special_character(case, 'case')
         else:
             return None
     elif where == "description":
         description = re.search(r"(?<=оп.).*?(?=спр.)", data, flags=re.DOTALL)
         if description is not None:
-            return del_special_character(description,None)
+            return del_special_character(description, None)
         else:
             return None
     elif where == "fund":
         fund = re.search(r"(?<=ф.).*?(?=оп.)", data, flags=re.DOTALL)
         if fund is not None:
-            return del_special_character(fund,None)
+            return del_special_character(fund, None)
         else:
             return None
     elif where == "year":
@@ -53,8 +56,8 @@ def re_to_get_data(data: str, where: str):
         return None
 
 
-def del_special_character(data,flag):
-    if flag =='case':
+def del_special_character(data, flag):
+    if flag == 'case':
         res = re.sub(r"\W+,", "", data.group(0)).strip()
     else:
         res = re.sub(r"\W+", "", data.group(0)).strip()

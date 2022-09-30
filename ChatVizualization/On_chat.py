@@ -1,6 +1,7 @@
 """
 This module shows changed data to user telegram chat
 """
+import message_creator.messager
 # project imports
 
 from Command.Create_buttoms_different_locality import create_buttons_multiple_locality
@@ -58,16 +59,10 @@ def write_if_less(message, bot, village):
     churches = SelectOperation(village)
     for i in churches:
         messanges = generate_message(i)
-        if len(messanges) > 4082:
-            for x in range(0, len(messanges) - 14, 4082):
-                bot.send_message(
-                    message.chat.id,
-                    f"{messanges[x: x + 4082]}",
-                    parse_mode="Markdown",
-                )
+        if len(messanges) > 3480:
+            message_creator.messager.message_creator(messanges, bot, message)
         else:
-            bot.send_message(message.chat.id, f"{messanges}", parse_mode="Markdown")
-
+            bot.send_message(message.chat.id, f"{generate_message(i)}", parse_mode="Markdown")
 
 def get_current_village(
         message, village: str = None, lst_village={}, multiple=False, clear=False

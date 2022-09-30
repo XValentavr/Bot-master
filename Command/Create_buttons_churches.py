@@ -4,7 +4,6 @@ This module creates buttons if church mod was selected
 
 # local imports
 from telebot import types
-from difflib import SequenceMatcher
 import message_creator.messager
 from MySQLCommand.Select_from_information_about_churches import (
     select_operation_get_churches,
@@ -69,7 +68,7 @@ def callback_worker(call, bot, village, county) -> None:
     res = select_operation_get_churches(cur_church, village, county)
     for church in res:
         reg_1 = generate_message(church)
-        if len(reg_1) > 4082:
+        if len(reg_1) > 3480:
             message_creator.messager.message_creator(reg_1, bot, call)
         else:
             bot.send_message(call.message.chat.id, f"{generate_message(church)}", parse_mode="Markdown")

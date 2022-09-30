@@ -1,5 +1,6 @@
 import re
 
+from MessageChanger.check_and_change import checker_date
 from MessageChanger.not_kyiv_archive import del_special_character
 
 
@@ -8,7 +9,8 @@ def kyiv(data):
     description = analizer([kyiv_reg_to_get_data(d.lower(), 'description') for d in data if d != ""])
     case = [kyiv_reg_to_get_data(d.lower(), 'case') for d in data if d != ""]
     year = [kyiv_reg_to_get_data(d.lower(), 'year') for d in data if d != '']
-    return delete_nones(year, fund, description, case)
+    year, fund, description, case = delete_nones(year, fund, description, case)
+    return checker_date(year=year, description=description, fund=fund, case=case)
 
 
 def kyiv_reg_to_get_data(data: str, where: str):
@@ -25,13 +27,15 @@ def kyiv_reg_to_get_data(data: str, where: str):
         else:
             return None
     if where == 'description':
-        description = re.search(r"(?<=опис ).*?(?=, справ)", data, flags=re.DOTALL)
+        description = re.search(r"(?<=опис ).*?(?=, cправи)", data, flags=re.DOTALL)
+        if description is None:
+            description = re.search(r"(?<=опис ).*?(?=, справи)", data, flags=re.DOTALL)
         if description is not None:
             return del_special_character(description, None)
         else:
             return None
     if where == 'year':
-        year = re.search(r"(?<=\().*?(?=$)", data, flags=re.DOTALL)
+        year = re.search(r"(?<=\().*?(?=\))", data, flags=re.DOTALL)
         if year is not None:
             return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
         else:
