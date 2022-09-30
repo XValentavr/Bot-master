@@ -21,19 +21,19 @@ def kyiv_reg_to_get_data(data: str, where: str):
     if where == "fund":
         fund = re.search(r"(?<=фонд ).*?(?=, оп)", data, flags=re.DOTALL)
         if fund is not None:
-            return del_special_character(fund)
+            return del_special_character(fund, None)
         else:
             return None
     if where == 'description':
         description = re.search(r"(?<=опис ).*?(?=, справ)", data, flags=re.DOTALL)
         if description is not None:
-            return del_special_character(description)
+            return del_special_character(description, None)
         else:
             return None
     if where == 'year':
         year = re.search(r"(?<=\().*?(?=$)", data, flags=re.DOTALL)
         if year is not None:
-                return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
+            return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
         else:
             return None
     if where == 'case':
@@ -41,7 +41,7 @@ def kyiv_reg_to_get_data(data: str, where: str):
         if data is not None:
             description = re.search(r"(?<=^).*?(?=$)", data, flags=re.DOTALL)
             if description is not None:
-                return del_special_character(description)
+                return del_special_character(description, 'case')
             else:
                 return None
         else:

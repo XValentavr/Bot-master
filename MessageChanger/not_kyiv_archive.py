@@ -27,19 +27,19 @@ def re_to_get_data(data: str, where: str) -> str | None:
     if where == "case":
         case = re.search(r"(?<=спр.).*?(?=$)", data, flags=re.DOTALL)
         if case is not None:
-            return del_special_character(case)
+            return del_special_character(case,'case')
         else:
             return None
     elif where == "description":
         description = re.search(r"(?<=оп.).*?(?=спр.)", data, flags=re.DOTALL)
         if description is not None:
-            return del_special_character(description)
+            return del_special_character(description,None)
         else:
             return None
     elif where == "fund":
         fund = re.search(r"(?<=ф.).*?(?=оп.)", data, flags=re.DOTALL)
         if fund is not None:
-            return del_special_character(fund)
+            return del_special_character(fund,None)
         else:
             return None
     elif where == "year":
@@ -53,6 +53,10 @@ def re_to_get_data(data: str, where: str) -> str | None:
         return None
 
 
-def del_special_character(data):
-    res = re.sub(r"\W+", "", data.group(0)).strip()
+def del_special_character(data,flag):
+    if flag =='case':
+        res = re.sub(r"\W+,", "", data.group(0)).strip()
+    else:
+        res = re.sub(r"\W+", "", data.group(0)).strip()
+
     return f"{res}"

@@ -24,13 +24,6 @@ def create_buttons_churches(message, bot, churches: list, county) -> None:
     :return: None
     """
     keyboard = types.InlineKeyboardMarkup(row_width=3)
-    for i, _ in enumerate(churches):
-        try:
-            print(churches[i])
-            s = SequenceMatcher(None, churches[i].replace('церква', ''), churches[i + 1].replace('церква', ''))
-            print(s.ratio())
-        except IndexError:
-            break
     for i in churches:
         key = types.InlineKeyboardButton(text=i, callback_data=i)
         keyboard.add(key)

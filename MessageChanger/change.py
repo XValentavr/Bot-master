@@ -1,6 +1,5 @@
 from MessageChanger.kyiv_archive import kyiv
 from MessageChanger.not_kyiv_archive import not_kyiv
-import shlex
 
 
 def changer(message: dict) -> str:
@@ -42,42 +41,13 @@ def table_blueprint(
         f"{f'{village.strip()}'}\n"
         f"{f'{county.strip()}, {p_lambda(province.strip())}'}\n"
         f"{f'{church.strip()}'}\n"
-        f"\n"
-        f"*{metric_title(birth.upper()) if metric_title(birth) else None}*\n\n"
-        f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
     )
-    year, fund, description, case = metrics_changer(birth, archive)
+    if "NULL" not in birth:
+        table += (f"\n"
+        f"*{metric_title(birth.upper()) if metric_title(birth) else ''}*\n\n"
+        f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n")
+        year, fund, description, case = metrics_changer(birth, archive)
 
-    table = generator_of_message(
-        table,
-        year,
-        fund,
-        description,
-        case,
-    )
-
-    # for death metrics
-    table += f"\n\n*{metric_title(death.upper()) if metric_title(death) else None}*\n\n"
-    table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
-    year, fund, description, case = metrics_changer(death, archive)
-    table = generator_of_message(table, year, fund, description, case)
-
-    # for wedding metrics
-    table += (
-        f"\n\n*{metric_title(wedding.upper()) if metric_title(wedding) else None}*\n\n"
-    )
-    table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
-    year, fund, description, case = metrics_changer(wedding, archive)
-    table = generator_of_message(table, year, fund, description, case)
-
-    # for additional metrics
-    if additional.strip() != "" or testament.strip() != "":
-        table += f"\n\n*СПОВІДНІ ВІДОМОСТІ*\n\n"
-        table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
-        year, fund, description, case = metrics_changer(additional, archive)
-        table = generator_of_message(table, year, fund, description, case)
-
-        year, fund, description, case = metrics_changer(testament, archive)
         table = generator_of_message(
             table,
             year,
@@ -85,6 +55,42 @@ def table_blueprint(
             description,
             case,
         )
+    if 'NULL' not in death:
+        # for death metrics
+        title = metric_title(death)
+        if title:
+            table += f"\n\n*{title.upper()}*\n\n"
+            table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
+            year, fund, description, case = metrics_changer(death, archive)
+            table = generator_of_message(table, year, fund, description, case)
+
+    # for wedding metrics
+    if "NULL" not in wedding:
+        title = metric_title(wedding)
+        if title:
+            table += (
+                f"\n\n*{title.upper()}*\n\n"
+            )
+            table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
+            year, fund, description, case = metrics_changer(wedding, archive)
+            table = generator_of_message(table, year, fund, description, case)
+
+    # for additional metrics
+    if additional.strip() != "" or testament.strip() != "":
+        if 'NULL' not in additional or 'NULL' not in testament:
+            table += f"\n\n*СПОВІДНІ ВІДОМОСТІ*\n\n"
+            table += f"`|Фонд|{td}|Опис|{td}|Справа|{last_td}|Рік|`\n\n"
+            year, fund, description, case = metrics_changer(additional, archive)
+            table = generator_of_message(table, year, fund, description, case)
+
+            year, fund, description, case = metrics_changer(testament, archive)
+            table = generator_of_message(
+                table,
+                year,
+                fund,
+                description,
+                case,
+            )
 
     return table
 
