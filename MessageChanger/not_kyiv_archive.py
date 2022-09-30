@@ -1,7 +1,7 @@
 import re
 
 
-def not_kyiv(datalist: list) -> [list, list, list, list]:
+def not_kyiv(datalist: list):
     """
     This function works with metrics not in Kyiv archive
     :param datalist: list of metrics
@@ -17,7 +17,7 @@ def not_kyiv(datalist: list) -> [list, list, list, list]:
     return year, fund, description, case
 
 
-def re_to_get_data(data: str, where: str) -> str | None:
+def re_to_get_data(data: str, where: str):
     """
     Regex to get information
     :param data: data to check

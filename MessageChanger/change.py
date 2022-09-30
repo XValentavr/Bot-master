@@ -2,7 +2,7 @@ from MessageChanger.kyiv_archive import kyiv
 from MessageChanger.not_kyiv_archive import not_kyiv
 
 
-def changer(message: dict) -> str:
+def changer(message: dict):
     return table_blueprint(
         message.get("archive"),
         message.get("village"),
@@ -28,7 +28,7 @@ def table_blueprint(
         wedding,
         additional,
         testament,
-) -> str:
+):
     """
     This module creates table blueprint
     :return: blueprint of table
@@ -95,7 +95,7 @@ def table_blueprint(
     return table
 
 
-def metric_title(metric: str) -> str | None:
+def metric_title(metric: str):
     """
     This function gets metric title
     :param metric:  metric to get title
@@ -106,7 +106,7 @@ def metric_title(metric: str) -> str | None:
     return None
 
 
-def metrics_changer(metric: str, archive: str) -> [list, list, list, list]:
+def metrics_changer(metric: str, archive: str):
     """
     This module change metric string to table
     :param metric: string to change
@@ -131,7 +131,7 @@ def generator_of_message(
         fund: list,
         description: list,
         case: list,
-) -> str:
+):
     """
     This function generate full message
     :param table: string to add new info

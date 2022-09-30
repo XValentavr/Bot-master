@@ -48,7 +48,7 @@ def kyiv_reg_to_get_data(data: str, where: str):
             return None
 
 
-def analizer(list_to_a: list) -> list:
+def analizer(list_to_a: list):
     """
     This function changes list
     :param list_to_a: list to change
@@ -63,7 +63,7 @@ def analizer(list_to_a: list) -> list:
     return list_to_a
 
 
-def modify_case(data: str) -> str | None:
+def modify_case(data: str):
     """
     This function deletes unused parameters from str
     :param data: string to modify
@@ -83,7 +83,7 @@ def modify_case(data: str) -> str | None:
     return None
 
 
-def check_digits(data: str) -> str | None:
+def check_digits(data: str):
     count = 0
     for d in data:
         if d.isdigit():
