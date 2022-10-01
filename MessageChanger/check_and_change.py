@@ -24,7 +24,6 @@ def checker_date(fund, case, year, description):
                     if range_:
                         if not range_[0].strip().startswith('1'):
                             range_[0] = '1' + range_[0]
-                        print(yrs)
                         for index in range(int(range_[0].strip()), int(range_[1].strip()) + 1):
                             new_year.append("|" + str(index) + "|")
                             new_description.append(description[i])

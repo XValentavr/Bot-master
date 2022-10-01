@@ -15,6 +15,7 @@ from Command import ForStartMenu as ForStartMenu
 from Command.Create_buttons_churches import get_current_county
 from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
+from message_creator.messager import call_query
 
 bot = telebot.TeleBot(os.getenv("TOKEN"))
 logging.basicConfig(filename="sample.log", level=logging.ERROR)
@@ -33,6 +34,7 @@ try:
             "3) Команда /bid дозволяє Вам залишити заявку для дослідження або зв'язатися з нами",
         )
 
+
     # @bot.message_handler(commands=["help"])
     # def show_help(message):
     #   get_current_village(message, clear=True)
@@ -47,12 +49,14 @@ try:
 
         ForStartMenu.some_action(message, bot)
 
+
     @bot.message_handler(commands=["reset"])
     def send_welcome(message):
         get_current_village(message, clear=True)
         get_current_county(message, clear=True)
 
         ForStartMenu.some_action(message, bot)
+
 
     # @bot.message_handler(commands=['feedback'])
     # def create_feedback(message):
@@ -74,6 +78,7 @@ try:
 
         init_registration(bot, message)
 
+
     @bot.message_handler(commands=["search"])
     def sql_operation(message):
         markup = types.ReplyKeyboardRemove(selective=False)
@@ -82,11 +87,13 @@ try:
         )
         bot.register_next_step_handler(msg, process_village)
 
+
     def process_village(message):
         visualization(message, bot)
         global village, county
         village = get_current_village(message)
         county = get_current_county(message)
+
 
     @bot.message_handler(commands=["order"])
     def process_city_step(message):
@@ -94,8 +101,9 @@ try:
 
         to_order(message, bot)
 
+
     @bot.callback_query_handler(
-        func=lambda message: message.data not in ["start", "bid"]
+        func=lambda message: message.data not in ["start", "bid", 'More']
     )
     def select_churches(message):
         cur_village = village.get(message.from_user.id)
@@ -113,9 +121,16 @@ try:
         if flag:
             Create_buttoms_different_locality.callback_worker(message, bot)
 
+
     @bot.callback_query_handler(func=lambda message: message.data in ["start", "bid"])
     def help_handler(message):
         CreateButtons.callback_worker(message, bot)
+
+
+    @bot.callback_query_handler(func=lambda message: message.data == 'More')
+    def process_callback_more(message):
+        call_query(message, bot)
+
 
 except Exception:
     logging.basicConfig(filename="sample.log", level=logging.ERROR)
