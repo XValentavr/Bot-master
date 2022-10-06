@@ -13,22 +13,32 @@ def checker_date(fund, case, year, description):
     new_description = []
     for i, _ in enumerate(year):
         if year[i] is not None:
+            year[i] = year[i].replace(',,', ',')
             if ',' in year[i]:
                 list_of_years = year[i].split(',')
-                range_ = None
+                for ii, _ in enumerate(list_of_years):
+                    if list_of_years[ii] == '|':
+                        del list_of_years[ii]
                 for yrs in list_of_years:
                     if '-' in yrs:
                         range_ = yrs.replace('|', '').split('-')
                     elif '–' in yrs:
                         range_ = yrs.replace('|', '').split('–')
+                    else:
+                        range_ = None
+                        new_year.append("|" + str(yrs.replace('|', '')).strip() + "|")
+                        new_description.append(description[i])
+                        new_fund.append(fund[i])
+                        new_case.append(case[i])
                     if range_:
-                        if not range_[0].strip().startswith('1'):
-                            range_[0] = '1' + range_[0]
-                        for index in range(int(range_[0].strip()), int(range_[1].strip()) + 1):
-                            new_year.append("|" + str(index) + "|")
-                            new_description.append(description[i])
-                            new_fund.append(fund[i])
-                            new_case.append(case[i])
+                        if range_[1] != '':
+                            if not range_[0].strip().startswith('1'):
+                                range_[0] = '1' + range_[0]
+                            for index in range(int(range_[0].strip()), int(range_[1].strip()) + 1):
+                                new_year.append("|" + str(index).strip() + "|")
+                                new_description.append(description[i])
+                                new_fund.append(fund[i])
+                                new_case.append(case[i])
             else:
                 if '.' not in year[i]:
                     range_ = None
@@ -37,21 +47,22 @@ def checker_date(fund, case, year, description):
                     elif '–' in year[i]:
                         range_ = year[i].replace('|', '').split('–')
                     if range_:
-                        if not range_[0].strip().startswith('1'):
-                            range_[0] = '1' + range_[0]
-                        for index in range(int(range_[0].strip()), int(range_[1].strip()) + 1):
-                            new_year.append("|" + str(index) + "|")
-                            new_description.append(description[i])
-                            new_fund.append(fund[i])
-                            new_case.append(case[i])
+                        if range_[1] != '':
+                            if not range_[0].strip().startswith('1'):
+                                range_[0] = '1' + range_[0]
+                            for index in range(int(range_[0].strip()), int(range_[1].strip()) + 1):
+                                new_year.append("|" + str(index).strip() + "|")
+                                new_description.append(description[i])
+                                new_fund.append(fund[i])
+                                new_case.append(case[i])
 
                     else:
-                        new_year.append(year[i])
+                        new_year.append(year[i].strip())
                         new_description.append(description[i])
                         new_fund.append(fund[i])
                         new_case.append(case[i])
                 else:
-                    new_year.append(year[i])
+                    new_year.append(year[i].strip())
                     new_description.append(description[i])
                     new_fund.append(fund[i])
                     new_case.append(case[i])
@@ -76,7 +87,7 @@ def checker_case(fund, case, year, description):
             if ',' in case[i]:
                 list_of_cases = case[i].split(',')
                 for cs in list_of_cases:
-                    if 'арк.' in cs:
+                    if 'арк' in cs:
                         continue
                     range_ = None
                     if '-' in cs:
@@ -100,3 +111,4 @@ def checker_case(fund, case, year, description):
                 new_fund.append(fund[i])
                 new_case.append(case[i])
     return new_year, new_fund, new_description, new_case
+

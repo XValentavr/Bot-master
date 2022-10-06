@@ -4,6 +4,7 @@ This module gets all information from database
 
 # local imports
 import re
+from collections import OrderedDict
 
 from MySQLCommand.CreateConnection import connect
 
@@ -28,4 +29,20 @@ def SelectOperation(name: str) -> list:
     for i in metrics:
         if i not in new_metrics:
             new_metrics.append(i)
-    return new_metrics
+
+    # sort keys, then get values from original - fast
+
+    return create_sorted(new_metrics)
+
+
+def create_sorted(metrics):
+    """
+    Sorts by length of metric
+    :param metrics: income metric
+    :return: final sorted result
+    """
+    final = []
+    mtrc_dct = {len(str(m)): m for m in metrics}
+    for i in sorted(mtrc_dct.keys()):
+        final.append(mtrc_dct.get(i))
+    return final

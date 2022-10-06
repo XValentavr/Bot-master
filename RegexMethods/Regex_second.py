@@ -14,6 +14,7 @@ def generate_message(res: str) -> str:
     :return: str
     """
     res = list(res)
+
     count = 0
     for i in res:
         if i is None:

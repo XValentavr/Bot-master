@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import os_env
@@ -15,6 +16,8 @@ from Command import ForStartMenu as ForStartMenu
 from Command.Create_buttons_churches import get_current_county
 from FormCRM.RegistrationUser import init_registration
 from Sorted import SortedBy
+from UserActivityMonitoring.count_of_users import insert_new_user
+from UserActivityMonitoring.send_activity_information import send_info_message, get_count_of_new_user, get_count_of_uses
 from message_creator.messager import call_query
 
 bot = telebot.TeleBot(os.getenv("TOKEN"))
@@ -26,13 +29,15 @@ try:
     def show_info(message):
         get_current_village(message, clear=True)
         get_current_county(message, clear=True)
-        bot.send_message(
+        msg = bot.send_message(
             message.chat.id,
             "Ви можете знайти метрики в архівах України, використовуючи цього бота.\n"
             "1) Команда /search дозволяє Вам знайти інформації\n"
             "2) Команда /reset дозволяє Вам повернутися в початкове меню\n"
             "3) Команда /bid дозволяє Вам залишити заявку для дослідження або зв'язатися з нами",
         )
+        if bot.get_chat(message.chat.id).pinned_message is None:
+            bot.pin_chat_message(chat_id=message.chat.id, message_id=msg.message_id)
 
 
     # @bot.message_handler(commands=["help"])
@@ -82,6 +87,7 @@ try:
     @bot.message_handler(commands=["search"])
     def sql_operation(message):
         markup = types.ReplyKeyboardRemove(selective=False)
+        insert_new_user(message)
         msg = bot.send_message(
             message.chat.id, "Введіть назву населеного пункту.", reply_markup=markup
         )
@@ -100,6 +106,18 @@ try:
         from SendInfoToConnect.SendInfo import to_order
 
         to_order(message, bot)
+
+
+    @bot.message_handler(commands=["activity"])
+    def get_activity(message):
+        now = datetime.datetime.now()
+        superuser = int(os.getenv('superuser'))
+        if message.from_user.id == superuser:
+            bot.send_message(
+                superuser, send_info_message(get_count_of_new_user(now), get_count_of_uses(now)))
+        else:
+            bot.send_message(
+                message.from_user.id, "Такої команди не існує")
 
 
     @bot.callback_query_handler(

@@ -5,6 +5,7 @@ This module show all information if county mod is selected
 import re
 
 from MySQLCommand.CreateConnection import connect
+from MySQLCommand.MySQLSelect import create_sorted
 
 
 def select_operation_get_counties(current_county: str, current_village: list) -> list:
@@ -34,4 +35,4 @@ def select_operation_get_counties(current_county: str, current_village: list) ->
     result = cursor.fetchall()
     cursor.close()
     connection.close()
-    return [res for res in result]
+    return create_sorted([res for res in result])

@@ -95,6 +95,7 @@ def table_blueprint(
                 case,
             )
 
+    table += '\n\nЗамовити дослідження - */bid* \nРозпочати пошук - */search*'
     return table
 
 
@@ -148,7 +149,7 @@ def generator_of_message(
     for data in range(len(year)):
         fund_1 = count_tabs(fund[data], "fund")
         description_1 = count_tabs(description[data], "description")
-        case_1 = count_tabs(case[data], "case")
+        case_1 = count_tabs(case[data].replace('-', ''), "case")
         table += f"`{fund_1}{td}{description_1}{td}{case_1}{td}{year[data]}`\n"
     return table
 

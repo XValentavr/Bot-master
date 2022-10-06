@@ -6,10 +6,11 @@ This module gets data from database if church mod is selected
 import re
 
 from MySQLCommand.CreateConnection import connect
+from MySQLCommand.MySQLSelect import create_sorted
 
 
 def select_operation_get_churches(
-    current_church: str, current_village: str, current_region: str
+        current_church: str, current_village: str, current_region: str
 ) -> list:
     """
     get info from database when church mod is selected
@@ -35,4 +36,9 @@ def select_operation_get_churches(
     result = cursor.fetchall()
     cursor.close()
     connection.close()
-    return [churches for churches in result]
+    new_metrics = []
+    final = []
+    mtrc_dct = {len(str(m)): m for m in new_metrics}
+    for i in sorted(mtrc_dct.keys()):
+        final.append(mtrc_dct.get(i))
+    return create_sorted([churches for churches in result])

@@ -22,8 +22,9 @@ def create_buttons_county(message, bot, village: str) -> None:
     village = "".join(map(str, village))
     counties = get_county(village, " ")
     for i in counties:
-        key = types.InlineKeyboardButton(text=i, callback_data=i)
-        keyboard.add(key)
+        if len(i) > 1:
+            key = types.InlineKeyboardButton(text=i, callback_data=i)
+            keyboard.add(key)
     bot.send_message(
         message.from_user.id,
         text="Знайшов населений пункт в таких повітах.\n"

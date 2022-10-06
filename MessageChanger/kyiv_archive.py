@@ -27,9 +27,9 @@ def kyiv_reg_to_get_data(data: str, where: str):
         else:
             return None
     if where == 'description':
-        description = re.search(r"(?<=опис ).*?(?=, cправи)", data, flags=re.DOTALL)
+        description = re.search(r"(?<=опис ).*?(?=, cпра)", data, flags=re.DOTALL)
         if description is None:
-            description = re.search(r"(?<=опис ).*?(?=, справи)", data, flags=re.DOTALL)
+            description = re.search(r"(?<=опис ).*?(?=, спра)", data, flags=re.DOTALL)
         if description is not None:
             return del_special_character(description, None)
         else:
@@ -37,15 +37,15 @@ def kyiv_reg_to_get_data(data: str, where: str):
     if where == 'year':
         year = re.search(r"(?<=\().*?(?=\))", data, flags=re.DOTALL)
         if year is not None:
-            return re.sub(r"[^0-9,-]+", "", year.group(0)).strip()
+            return re.sub(r"[^0-9,–-]+", "", year.group(0)).strip()
         else:
             return None
     if where == 'case':
         data = modify_case(data)
         if data is not None:
-            description = re.search(r"(?<=^).*?(?=$)", data, flags=re.DOTALL)
-            if description is not None:
-                return del_special_character(description, 'case')
+            case = re.search(r"(?<=^).*?(?=$)", data, flags=re.DOTALL)
+            if case is not None:
+                return del_special_character(case, 'case')
             else:
                 return None
         else:
@@ -83,7 +83,7 @@ def modify_case(data: str):
             res = res[symbols[-1]:]
             res = check_digits(res.split(',')[1])
             return res
-        return check_digits(res)
+        return check_digits(res.strip())
     return None
 
 
@@ -92,7 +92,7 @@ def check_digits(data: str):
     for d in data:
         if d.isdigit():
             count += 1
-    if count > 1:
+    if count >= 1:
         return data
     else:
         return None

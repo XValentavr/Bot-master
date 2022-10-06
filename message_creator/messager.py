@@ -54,10 +54,14 @@ def call_query(call, bot):
         glob_to = len(glob_message)
     if call.data == 'More':
         for i in range(glob_to, glob_to + 10):
-            bot.send_message(call.message.chat.id, glob_message[i], parse_mode="Markdown")
-        if glob_to != len(glob_message):
+            try:
+                bot.send_message(call.message.chat.id, glob_message[i], parse_mode="Markdown")
+            except IndexError:
+                ...
+        if glob_to <= len(glob_message):
             glob_to += 10
-            create_more_button(call, bot, callback='query')
+            if glob_to <= len(glob_message):
+                create_more_button(call, bot, callback='query')
 
 
 def create_more_button(call, bot, callback=None):
@@ -71,9 +75,9 @@ def create_more_button(call, bot, callback=None):
     else:
         try:
             bot.send_message(
-                call.message.from_user.id, text='Натисніть, щоб показати більше',
+                call.message.chat.id, text='Натисніть, щоб показати більше',
                 reply_markup=keyboard, )
         except AttributeError:
             bot.send_message(
-                call.from_user.id, text='Натисніть, щоб показати більше',
+                call.chat.id, text='Натисніть, щоб показати більше',
                 reply_markup=keyboard, )
