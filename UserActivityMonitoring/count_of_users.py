@@ -13,7 +13,7 @@ def insert_new_user(user):
     connection = connect()
     all_user = get_user()
     if user.from_user.id not in all_user:
-        query = "INSERT INTO activity (userid,count_of_visits,date,was_before_set,diff) VALUES (%s,%s,%s,%s,%s)"
+        query = "INSERT INTO activity (userid,count_of_visits,date,was_before_set,diff,flag,fullname) VALUES (%s,%s,%s,%s,%s,%s,%s)"
         cursor = connection.cursor()
         cursor.execute(
             query,
@@ -22,7 +22,8 @@ def insert_new_user(user):
                 1,
                 datetime.datetime.now(),
                 0,
-                2
+                2, 0,
+                user.from_user.first_name + ' ' + user.from_user.last_name
             ),
         )
         connection.commit()

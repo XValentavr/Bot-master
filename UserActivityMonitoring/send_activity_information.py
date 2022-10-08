@@ -24,7 +24,7 @@ def get_count_of_new_user(now):
     connection = connect()
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT COUNT(*) FROM activity where (date BETWEEN (%s) and (%s))",
+        "SELECT COUNT(*) FROM activity where (date BETWEEN (%s) and (%s)) and flag=0",
         (
             (week),
             (now),
@@ -52,6 +52,9 @@ def get_count_of_uses(now):
     cursor.execute(
         "UPDATE activity SET was_before_set=count_of_visits  where (date BETWEEN (%s) and (%s)) ",
         (week, now))
+    connection.commit()
+    cursor.execute(
+        "UPDATE activity SET flag =1 ",)
     connection.commit()
     cursor.execute(
         "SELECT diff from activity WHERE (date BETWEEN(%s) and (%s))",
